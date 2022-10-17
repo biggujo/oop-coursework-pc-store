@@ -5,10 +5,12 @@ public class PartSSD extends Part {
     private String connector;
     private int memory;
 
-    public PartSSD() {}
+    public PartSSD(String partType) {
+        super(partType);
+    }
 
-    public PartSSD(int price, String name, String manufacturer, String color, String connector, int memory) {
-        super(price, name, manufacturer, color);
+    public PartSSD(String partType, int price, String name, String manufacturer, String color, String connector, int memory) {
+        super(partType, price, name, manufacturer, color);
         this.connector = connector;
         this.memory = memory;
     }

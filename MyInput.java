@@ -1,7 +1,7 @@
 import java.util.Scanner;
 
 // Class to return proper input (values in proper ranges or string with length in some range)
-public class Input {
+public class MyInput {
     public static int inputInt(Scanner in, int min, int max) {
 
         int value;

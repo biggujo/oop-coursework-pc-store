@@ -1,8 +1,13 @@
 package People;
 
-public class Customer extends User {
+import java.io.Serializable;
 
-    public Customer(String firstName, String surName, String password) {
+public class Customer extends User implements Serializable {
+
+    private String phone;
+
+    public Customer(String firstName, String surName, String phone, String password) {
         super(firstName, surName, password);
+        this.phone = phone;
     }
 }

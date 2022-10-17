@@ -5,19 +5,24 @@ package Parts;
  */
 public class Part {
 
+    private String partType;
     private int price;
     private String name;
     private String manufacturer;
     private String color;
 
-    public Part(int price, String name, String manufacturer, String color) {
+    public Part(String partType) {
+
+        this.partType = partType;
+    }
+
+    public Part(String partType, int price, String name, String manufacturer, String color) {
+        this.partType = partType;
         this.price = price;
         this.name = name;
         this.manufacturer = manufacturer;
         this.color = color;
     }
-
-    public Part() {}
 
     public int getPrice() {
         return price;
@@ -49,5 +54,9 @@ public class Part {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public String getPartType() {
+        return partType;
     }
 }

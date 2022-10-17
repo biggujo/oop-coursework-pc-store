@@ -5,20 +5,21 @@ public class PartCPU extends Part {
     private String socket;
     private int generation;
     private int cores;
+    private double maxFrequency;
 
-    public PartCPU() {}
+    public PartCPU(String partType) {
+        super(partType);
+    }
 
-    public PartCPU(int price, String name, String manufacturer, String color, String socket,
+    public PartCPU(String partType, int price, String name, String manufacturer, String color, String socket,
                    int generation, int cores, double maxFrequency) {
-        super(price, name, manufacturer, color);
+        super(partType, price, name, manufacturer, color);
 
         this.socket = socket;
         this.generation = generation;
         this.cores = cores;
         this.maxFrequency = maxFrequency;
     }
-
-    double maxFrequency;
 
     public String getSocket() {
         return socket;

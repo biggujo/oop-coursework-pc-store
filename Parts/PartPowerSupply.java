@@ -4,10 +4,12 @@ public class PartPowerSupply extends Part {
 
     private int powerAmount;
 
-    public PartPowerSupply() {}
+    public PartPowerSupply(String partType) {
+        super(partType);
+    }
 
-    public PartPowerSupply(int price, String name, String manufacturer, String color, int powerAmount) {
-        super(price, name, manufacturer, color);
+    public PartPowerSupply(String partType, int price, String name, String manufacturer, String color, int powerAmount) {
+        super(partType, price, name, manufacturer, color);
         this.powerAmount = powerAmount;
     }
 

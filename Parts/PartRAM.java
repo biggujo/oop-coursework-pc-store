@@ -3,16 +3,17 @@ package Parts;
 public class PartRAM extends Part {
 
     private int memory;
-    private int throughput;
-    private int units;
+    private double throughput;
 
-    public PartRAM() {}
+    public PartRAM(String partType) {
+        super(partType);
+    }
 
-    public PartRAM(int price, String name, String manufacturer, String color, int memory, int throughput, int units) {
-        super(price, name, manufacturer, color);
+    public PartRAM(String partType, int price, String name, String manufacturer, String color,
+                   int memory, double throughput) {
+        super(partType, price, name, manufacturer, color);
         this.memory = memory;
         this.throughput = throughput;
-        this.units = units;
     }
 
     public int getMemory() {
@@ -23,19 +24,12 @@ public class PartRAM extends Part {
         this.memory = memory;
     }
 
-    public int getThroughput() {
+    public double getThroughput() {
         return throughput;
     }
 
-    public void setThroughput(int throughput) {
+    public void setThroughput(double throughput) {
         this.throughput = throughput;
     }
 
-    public int getUnits() {
-        return units;
-    }
-
-    public void setUnits(int units) {
-        this.units = units;
-    }
 }

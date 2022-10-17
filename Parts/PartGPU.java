@@ -6,11 +6,13 @@ public class PartGPU extends Part {
     private int memory;
     private int powerConsumption;
 
-    public PartGPU() {}
+    public PartGPU(String partType) {
+        super(partType);
+    }
 
-    public PartGPU(int price, String name, String manufacturer, String color, int frequency,
+    public PartGPU(String partType, int price, String name, String manufacturer, String color, int frequency,
                    int memory, int powerConsumption) {
-        super(price, name, manufacturer, color);
+        super(partType, price, name, manufacturer, color);
         this.frequency = frequency;
         this.memory = memory;
         this.powerConsumption = powerConsumption;

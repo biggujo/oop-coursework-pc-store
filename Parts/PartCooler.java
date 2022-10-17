@@ -4,28 +4,20 @@ import java.util.ArrayList;
 
 public class PartCooler extends Part {
 
-    private ArrayList<String> socketArrayList;
     private int rpm;
     private int maxNoiseLevel;
     private boolean backlight;
 
-    public PartCooler() {}
+    public PartCooler(String partType) {
+        super(partType);
+    }
 
-    public PartCooler(int price, String name, String manufacturer, String color, ArrayList<String> socketArrayList, int rpm,
+    public PartCooler(String partType, int price, String name, String manufacturer, String color, int rpm,
                       int maxNoiseLevel, boolean backlight) {
-        super(price, name, manufacturer, color);
-        this.socketArrayList = socketArrayList;
+        super(partType, price, name, manufacturer, color);
         this.rpm = rpm;
         this.maxNoiseLevel = maxNoiseLevel;
         this.backlight = backlight;
-    }
-
-    public ArrayList<String> getSocketArrayList() {
-        return socketArrayList;
-    }
-
-    public void setSocketArrayList(ArrayList<String> socketArrayList) {
-        this.socketArrayList = socketArrayList;
     }
 
     public int getRpm() {

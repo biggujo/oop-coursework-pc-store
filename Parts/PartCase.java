@@ -6,11 +6,13 @@ public class PartCase extends Part {
     private double weight;
     private boolean backlight;
 
-    public PartCase() {}
+    public PartCase(String partType) {
+        super(partType);
+    }
 
-    public PartCase(int price, String name, String manufacturer, String color, String formFactorCompatibility,
-                    double weight, boolean backlight) {
-        super(price, name, manufacturer, color);
+    public PartCase(String partType, int price, String name, String manufacturer, String color,
+                    String formFactorCompatibility, double weight, boolean backlight) {
+        super(partType, price, name, manufacturer, color);
         this.formFactorCompatibility = formFactorCompatibility;
         this.weight = weight;
         this.backlight = backlight;

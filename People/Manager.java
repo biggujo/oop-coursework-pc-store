@@ -1,19 +1,22 @@
 package People;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Manager extends User {
+public class Manager extends User implements Serializable {
 
     private String middleName;
     private LocalDate birthDate;
     private String jobTitle;
+    private String phone;
 
     public Manager(String firstName, String surName, String middleName, LocalDate birthDate, String jobTitle,
-                   String password) {
+                   String phone, String password) {
         super(firstName, surName, password);
         this.middleName = middleName;
         this.birthDate = birthDate;
         this.jobTitle = jobTitle;
+        this.phone = phone;
     }
 
     public String getMiddleName() {
@@ -40,4 +43,11 @@ public class Manager extends User {
         this.jobTitle = jobTitle;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 }
