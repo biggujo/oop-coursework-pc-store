@@ -1,4 +1,4 @@
-import Parts.*;
+import Hardware.*;
 
 import java.util.ArrayList;
 import java.util.Locale;
@@ -15,7 +15,7 @@ public class Store {
     private String name;
 
     // List of computer parts
-    private ArrayList<Parts.Part> partArrayList = new ArrayList<>();
+    private ArrayList<HardwarePart> hardwarePartArrayList = new ArrayList<>();
 
     public Store(String name) {
         this.name = name;
@@ -27,14 +27,14 @@ public class Store {
         Scanner inString = new Scanner(System.in);
         in.useLocale(Locale.US);
 
-        partArrayList.add(addPartSSD(in, inString));
+        hardwarePartArrayList.add(addPartSSD(in, inString));
 
         System.out.println();
         System.out.println();
     }
 
     // Set shared attributes
-    private void partSetGeneralAttr(Part part, Scanner in, Scanner inString) {
+    private void partSetGeneralAttr(HardwarePart hardwarePart, Scanner in, Scanner inString) {
 
 
 //        int price;
@@ -57,13 +57,13 @@ public class Store {
 //        part.setColor(color);
     }
 
-    private Part addPartCase(Scanner in, Scanner inString) {
+    private HardwarePart addPartCase(Scanner in, Scanner inString) {
 
         String formFactor;
         double weight;
         boolean backlight = false;
 
-        PartCase partCase = new PartCase("Case");
+        HardwarePartCase partCase = new HardwarePartCase("Case");
 
         partSetGeneralAttr(partCase, in, inString);
 
@@ -82,13 +82,13 @@ public class Store {
         return partCase;
     }
 
-    private Part addPartCooler(Scanner in, Scanner inString) {
+    private HardwarePart addPartCooler(Scanner in, Scanner inString) {
 
         int rpm;
         int maxNoiseLevel;
         boolean backlight = false;
 
-        PartCooler partCooler = new PartCooler("Cooler");
+        HardwarePartCooler partCooler = new HardwarePartCooler("Cooler");
 
         partSetGeneralAttr(partCooler, in, inString);
 
@@ -107,14 +107,14 @@ public class Store {
         return partCooler;
     }
 
-    private Part addPartCPU(Scanner in, Scanner inString) {
+    private HardwarePart addPartCPU(Scanner in, Scanner inString) {
 
         String socket;
         int generation;
         int cores;
         double maxFrequency;
 
-        PartCPU partCPU = new PartCPU("CPU");
+        HardwarePartCPU partCPU = new HardwarePartCPU("CPU");
 
         partSetGeneralAttr(partCPU, in, inString);
 
@@ -135,13 +135,13 @@ public class Store {
         return partCPU;
     }
 
-    private Part addPartGPU(Scanner in, Scanner inString) {
+    private HardwarePart addPartGPU(Scanner in, Scanner inString) {
 
         int frequency;
         int memory;
         int powerConsumption;
 
-        PartGPU partGPU = new PartGPU("GPU");
+        HardwarePartGPU partGPU = new HardwarePartGPU("GPU");
 
         partSetGeneralAttr(partGPU, in, inString);
 
@@ -159,13 +159,13 @@ public class Store {
         return partGPU;
     }
 
-    private Part addPartMotherboard(Scanner in, Scanner inString) {
+    private HardwarePart addPartMotherboard(Scanner in, Scanner inString) {
 
         String socket;
         int maxMemoryAmount;
         String formFactor;
 
-        PartMotherboard partMotherboard = new PartMotherboard("Motherboard");
+        HardwarePartMotherboard partMotherboard = new HardwarePartMotherboard("Motherboard");
 
         partSetGeneralAttr(partMotherboard, in, inString);
 
@@ -183,11 +183,11 @@ public class Store {
         return partMotherboard;
     }
 
-    private Part addPartPowerSupply(Scanner in, Scanner inString) {
+    private HardwarePart addPartPowerSupply(Scanner in, Scanner inString) {
 
         int powerAmount;
 
-        PartPowerSupply partPowerSupply = new PartPowerSupply("Power supply");
+        HardwarePartPowerSupply partPowerSupply = new HardwarePartPowerSupply("Power supply");
 
         partSetGeneralAttr(partPowerSupply, in, inString);
 
@@ -199,12 +199,12 @@ public class Store {
         return partPowerSupply;
     }
 
-    private Part addPartRAM(Scanner in, Scanner inString) {
+    private HardwarePart addPartRAM(Scanner in, Scanner inString) {
 
         int memory;
         double throughput;
 
-        PartRAM partRAM = new PartRAM("RAM");
+        HardwarePartRAM partRAM = new HardwarePartRAM("RAM");
 
         partSetGeneralAttr(partRAM, in, inString);
 
@@ -219,12 +219,12 @@ public class Store {
         return partRAM;
     }
 
-    private Part addPartSSD(Scanner in, Scanner inString) {
+    private HardwarePart addPartSSD(Scanner in, Scanner inString) {
 
         String connector;
         int memory;
 
-        PartSSD partSSD = new PartSSD("SSD");
+        HardwarePartSSD partSSD = new HardwarePartSSD("SSD");
 
         partSetGeneralAttr(partSSD, in, inString);
 

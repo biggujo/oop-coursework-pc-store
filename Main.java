@@ -1,7 +1,4 @@
-import People.Admin;
-import People.Customer;
-import People.Manager;
-import People.User;
+import Users.*;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -14,18 +11,12 @@ public class Main {
     private static final int NAME_MIN_LEN = 3;
     private static final int NAME_MAX_LEN = 32;
 
-    private static final String DB_CUSTOMERS_DAT = "db/customers.dat";
-    private static final String DB_MANAGERS_DAT = "db/managers.dat";
-    private static final String DB_ADMIN_DAT = "db/admin.dat";
+    private static final String DB_USERS_DAT = "db/users.dat";
 
     public static void main(String[] args) {
 
-        File customerFileDB = new File(DB_CUSTOMERS_DAT);
-        File managerFileDB = new File(DB_MANAGERS_DAT);
-        File adminFileDB = new File(DB_ADMIN_DAT);
-        MyFiles.createFile(customerFileDB);
-        MyFiles.createFile(managerFileDB);
-        MyFiles.createFile(adminFileDB);
+        File fileUsersDB = new File(DB_USERS_DAT);
+        MyFiles.createFile(fileUsersDB);
 
         Scanner in = new Scanner(System.in);
         Scanner inString = new Scanner(System.in);
@@ -33,13 +24,9 @@ public class Main {
 
         Store store = new Store("Computer Store");
 
-        ArrayList<Manager> managerArrayList = new ArrayList<>();
-        ArrayList<Customer> customerArrayList = new ArrayList<>();
-        Admin admin = null;
+        ArrayList<User> userArrayList = new ArrayList<>();
 
-        if (managerFileDB.length() > 0) managerArrayList = MyFiles.deserializeArrayList(managerFileDB);
-        if (customerFileDB.length() > 0) customerArrayList = MyFiles.deserializeArrayList(customerFileDB);
-        if (adminFileDB.length() > 0) admin = MyFiles.deserializeObject(adminFileDB);
+        MyFiles.deserializeAllObjects(userArrayList, fileUsersDB);
 
         System.out.println(store.getName());
 
@@ -52,26 +39,21 @@ public class Main {
 
             switch (MyInput.inputInt(in, 0, 2)) {
 
+                // Login
                 case 1:
 
-                    // List of all users
+                    User userLoggedIn = login(userArrayList, inString);
 
+                    if (userLoggedIn != null) {
 
-                    String login;
-                    String password;
-
-                    System.out.print("Login: ");
-                    login = MyInput.inputString(inString, NAME_MIN_LEN, NAME_MAX_LEN);
-
-
-
-                    System.out.print("Password: ");
-                    password = MyInput.inputString(inString, NAME_MIN_LEN, NAME_MAX_LEN);
-
+                        // TODO: run store
+                    }
+                    else System.out.println("Such user was not found!");
                     break;
 
+                // Register
                 case 2:
-                    System.out.println("Who are you:");
+                    System.out.println("Choose role:");
                     System.out.println("1 - Customer");
                     System.out.println("2 - Manager");
                     System.out.println("3 - Admin");
@@ -82,36 +64,29 @@ public class Main {
                         // Register customer
                         case 1:
 
-                            registerCustomer(customerArrayList, inString);
-                            MyFiles.serializeArrayList(customerArrayList, customerFileDB);
-
+                            registerCustomer(userArrayList, inString);
                             break;
 
                         // Register manager
                         case 2:
-                            registerManager(managerArrayList, in, inString);
-                            MyFiles.serializeArrayList(managerArrayList, managerFileDB);
+
+                            registerManager(userArrayList, in, inString);
                             break;
 
                         // Register admin
                         case 3:
 
-                            if (admin == null) {
-
-                                admin = registerAdmin(inString);
-                                MyFiles.serializeObject(admin, adminFileDB);
-                            }
-                            else {
-
-                                System.out.println("Admin is already registered!");
-                                System.out.println("To restore password, delete " + DB_ADMIN_DAT);
-                            }
+                            registerAdmin(userArrayList, inString);
                             break;
 
                         // Go back
                         case 0:
+
                             break;
                     }
+
+                    // Save new user
+                    MyFiles.serializeObject(userArrayList.get(userArrayList.size() - 1), fileUsersDB, true);
 
                     break;
 
@@ -122,7 +97,7 @@ public class Main {
         }
     }
 
-    private static void registerManager(ArrayList<Manager> managerArrayList, Scanner in, Scanner inString) {
+    private static void registerManager(ArrayList<User> managerArrayList, Scanner in, Scanner inString) {
 
         int birthDay;
         int birthMonth;
@@ -155,10 +130,10 @@ public class Main {
         int tmpInt = MyInput.inputInt(in, 1, 3);
 
         switch (tmpInt) {
-            case 1:     jobTitle = "Trainee"; break;
-            case 2:     jobTitle = "Worker";  break;
-            case 3:     jobTitle = "Loader";  break;
-            default:    jobTitle = "Unnamed";
+            case 1: jobTitle = "Trainee"; break;
+            case 2: jobTitle = "Worker";  break;
+            case 3: jobTitle = "Loader";  break;
+            default: jobTitle = "Unnamed";
         }
 
         System.out.print("Phone: +380");
@@ -171,7 +146,7 @@ public class Main {
         managerArrayList.add(new Manager(firstName, surName, middleName, birthDate, jobTitle, phone, password));
     }
 
-    private static void registerCustomer(ArrayList<Customer> customerArrayList, Scanner inString) {
+    private static void registerCustomer(ArrayList<User> customerArrayList, Scanner inString) {
 
         String firstName;
         String surName;
@@ -193,13 +168,66 @@ public class Main {
         customerArrayList.add(new Customer(firstName, surName, phone, password));
     }
 
-    private static Admin registerAdmin(Scanner inString) {
+    private static void registerAdmin(ArrayList<User> customerArrayList, Scanner inString) {
 
+        String firstName;
+        String surName;
         String password;
 
+        System.out.println("Registering a new admin!");
+
+        // Basic information
+        System.out.print("First name: ");
+        firstName = MyInput.inputString(inString, NAME_MIN_LEN, NAME_MAX_LEN);
+        System.out.print("Second name: ");
+        surName = MyInput.inputString(inString, NAME_MIN_LEN, NAME_MAX_LEN);
         System.out.print("Password: ");
         password = MyInput.inputString(inString, 3, 12);
 
-        return new Admin(password);
+        customerArrayList.add(new Admin(firstName, surName, password));
+    }
+
+    // Login into the shop
+    // Return: user
+    private static User login(ArrayList<User> userArrayList, Scanner inString) {
+
+        String login;
+        String password;
+
+        System.out.print("Login (name and surname): ");
+        login = MyInput.inputString(inString, NAME_MIN_LEN, NAME_MAX_LEN);
+
+        User curLoginUser = findUserByLogin(userArrayList, login);
+
+        if (curLoginUser != null) {
+
+            boolean success = false;
+            while (!success) {
+
+                System.out.print("Password: ");
+                password = MyInput.inputString(inString, NAME_MIN_LEN, NAME_MAX_LEN);
+
+                if (password.equals(curLoginUser.getPassword())) {
+
+                    System.out.println("Succeeded login!");
+                    System.out.println("Welcome, " + login);
+                    success = true;
+                }
+            }
+            return curLoginUser;
+        } else return null;
+    }
+
+    // Return user by its login
+    private static User findUserByLogin(ArrayList<User> userArrayList, String login) {
+
+        for (User u : userArrayList) {
+
+            if ((u.getFirstName() + " " + u.getSurName()).equals(login)) {
+
+                return u;
+            }
+        }
+        return null;
     }
 }
