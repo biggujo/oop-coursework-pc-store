@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartSSD extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartSSD extends HardwarePart implements Serializable {
 
     private String connector;
     private int memory;

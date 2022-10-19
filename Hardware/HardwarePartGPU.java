@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartGPU extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartGPU extends HardwarePart implements Serializable {
 
     private int frequency;
     private int memory;

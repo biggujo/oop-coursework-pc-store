@@ -1,7 +1,10 @@
 package Users;
 
+import Hardware.HardwarePart;
+
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 public class Manager extends User implements Serializable {
 
@@ -9,14 +12,17 @@ public class Manager extends User implements Serializable {
     private LocalDate birthDate;
     private String jobTitle;
     private String phone;
+    private int salary;
+    private ArrayList<HardwarePart> soldParts = new ArrayList<>();
 
     public Manager(String firstName, String surName, String middleName, LocalDate birthDate, String jobTitle,
-                   String phone, String password) {
+                   String phone, String password, int salary) {
         super(TypesOfUsers.MANAGER.toString(), firstName, surName, password);
         this.middleName = middleName;
         this.birthDate = birthDate;
         this.jobTitle = jobTitle;
         this.phone = phone;
+        this.salary = salary;
     }
 
     public String getMiddleName() {

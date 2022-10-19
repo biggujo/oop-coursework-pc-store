@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartPowerSupply extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartPowerSupply extends HardwarePart implements Serializable {
 
     private int powerAmount;
 

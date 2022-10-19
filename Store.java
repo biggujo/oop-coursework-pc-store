@@ -1,60 +1,273 @@
 import Hardware.*;
+import Users.TypesOfUsers;
+import Users.User;
+import Utils.MyFiles;
+import Utils.MyInput;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Scanner;
 
 public class Store {
 
-    private int MIN_PRICE = 1;
-    private int MAX_PRICE = 1000000;
+    private final static int MIN_PRICE = 1;
+    private final static int MAX_PRICE = 1000000;
 
-    private int MIN_LENGTH = 1;
-    private int MAX_LENGTH = 32;
+    private final static int MIN_LENGTH = 1;
+    private final static int MAX_LENGTH = 32;
+
+    private final static String DB_HARDWARE_DAT = "db/hardware.dat";
 
     private String name;
-
-    // List of computer parts
-    private ArrayList<HardwarePart> hardwarePartArrayList = new ArrayList<>();
 
     public Store(String name) {
         this.name = name;
     }
 
-    public void run() {
+    public void run(User currentUser, ArrayList<User> userArrayList) {
+
+        File fileHardwareDB = new File(DB_HARDWARE_DAT);
+        MyFiles.createFile(fileHardwareDB);
 
         Scanner in = new Scanner(System.in);
         Scanner inString = new Scanner(System.in);
         in.useLocale(Locale.US);
 
-        hardwarePartArrayList.add(addPartSSD(in, inString));
+        // List of computer parts
+        ArrayList<HardwarePart> hardwarePartArrayList = new ArrayList<>();
 
-        System.out.println();
-        System.out.println();
+        if (fileHardwareDB.length() > 0) hardwarePartArrayList = MyFiles.deserializeArrayList(fileHardwareDB);
+
+        System.out.println("Store menu:");
+
+        // If manager
+        if (currentUser.getType().equals(TypesOfUsers.MANAGER.toString())) {
+
+            System.out.println("1 - Add part");
+            System.out.println("2 - Add computer");
+            System.out.println("3 - Print some stock");
+            System.out.println("4 - Print all stock");
+            System.out.println("0 - Close store");
+
+            while (true) {
+
+                System.out.print("> ");
+
+                switch (MyInput.inputInt(in, 0, 4)) {
+
+                    // Add part
+                    case 1:
+                        System.out.println("Choose part:");
+                        System.out.println("1 - Case");
+                        System.out.println("2 - Cooler");
+                        System.out.println("3 - CPU");
+                        System.out.println("4 - GPU");
+                        System.out.println("5 - RAM");
+                        System.out.println("6 - SSD");
+                        System.out.println("7 - Motherboard");
+                        System.out.println("8 - Power supply");
+                        System.out.print("> ");
+
+                        switch (MyInput.inputInt(in, 1, 8)) {
+
+                            case 1:
+
+                                hardwarePartArrayList.add(addPartCase(in, inString));
+                                break;
+
+                            case 2:
+
+                                hardwarePartArrayList.add(addPartCooler(in, inString));
+                                break;
+
+                            case 3:
+
+                                hardwarePartArrayList.add(addPartCPU(in, inString));
+                                break;
+
+                            case 4:
+
+                                hardwarePartArrayList.add(addPartGPU(in, inString));
+                                break;
+
+                            case 5:
+
+                                hardwarePartArrayList.add(addPartRAM(in, inString));
+                                break;
+
+                            case 6:
+
+                                hardwarePartArrayList.add(addPartSSD(in, inString));
+                                break;
+
+                            case 7:
+
+                                hardwarePartArrayList.add(addPartMotherboard(in, inString));
+                                break;
+
+                            case 8:
+
+                                hardwarePartArrayList.add(addPartPowerSupply(in, inString));
+                                break;
+                        }
+
+                        System.out.println("Success!");
+                        break;
+
+
+                    // TODO: Add computers
+                    case 2:
+
+                        break;
+
+                    // Print some stock
+                    case 3:
+
+                        if (hardwarePartArrayList.size() == 0) {
+
+                            System.out.println("Add some hardware first!");
+                            break;
+                        }
+
+                        System.out.println("Choose part:");
+                        System.out.println("1 - Case");
+                        System.out.println("2 - Cooler");
+                        System.out.println("3 - CPU");
+                        System.out.println("4 - GPU");
+                        System.out.println("5 - RAM");
+                        System.out.println("6 - SSD");
+                        System.out.println("7 - Motherboard");
+                        System.out.println("8 - Power supply");
+                        System.out.print("> ");
+
+                        int choose = MyInput.inputInt(in, 1, 8);
+                        String partTypeToFind = null;
+
+                        switch (choose) {
+
+                            case 1:
+
+                                partTypeToFind = TypesOfHardware.CASE.toString();
+                                break;
+                            case 2:
+
+                                partTypeToFind = TypesOfHardware.COOLER.toString();
+                                break;
+                            case 3:
+
+                                partTypeToFind = TypesOfHardware.CPU.toString();
+                                break;
+                            case 4:
+
+                                partTypeToFind = TypesOfHardware.GPU.toString();
+                                break;
+
+                            case 5:
+
+                                partTypeToFind = TypesOfHardware.RAM.toString();
+                                break;
+                            case 6:
+
+                                partTypeToFind = TypesOfHardware.SSD.toString();
+                                break;
+
+                            case 7:
+
+                                partTypeToFind = TypesOfHardware.MOTHERBOARD.toString();
+                                break;
+                            case 8:
+
+                                partTypeToFind = TypesOfHardware.POWER_SUPPLY.toString();
+                                break;
+                        }
+
+                        // Print parts of given type
+                        for (HardwarePart h: hardwarePartArrayList) {
+                            if (h.getPartType().equals(partTypeToFind)) {
+
+                                System.out.println(h);
+                            }
+                        }
+                        break;
+
+                    // Print all stock
+                    case 4:
+
+                        if (hardwarePartArrayList.size() == 0) {
+
+                            System.out.println("Add some hardware first!");
+                            break;
+                        }
+
+                        for (HardwarePart h: hardwarePartArrayList) {
+                            System.out.println(h);
+                        }
+                        break;
+
+                    // Close store
+                    case 0:
+
+                        MyFiles.serializeArrayList(hardwarePartArrayList, fileHardwareDB, false);
+                        return;
+                }
+            }
+        }
+
+        if (currentUser.getType().equals(TypesOfUsers.ADMIN.toString())) {
+
+            System.out.println("1 - View managers");
+            System.out.println("2 - View customers");
+            System.out.println("3 - Print manager sales");
+            System.out.println("3 - Set salary for manager");
+            System.out.println("4 - Fire manager");
+            System.out.println("5 - Delete customer");
+            System.out.println("0 - Close store");
+
+            while (true) {
+
+                System.out.print("> ");
+
+                switch (MyInput.inputInt(in, 0, 5)) {
+
+                    case 4:
+
+                        userArrayList.remove(0);
+                        userArrayList.remove(0);
+                        return;
+
+                    // Close store
+                    case 0:
+
+                        MyFiles.serializeArrayList(hardwarePartArrayList, fileHardwareDB, false);
+                        return;
+                }
+            }
+
+        }
     }
 
     // Set shared attributes
     private void partSetGeneralAttr(HardwarePart hardwarePart, Scanner in, Scanner inString) {
-
 
 //        int price;
 //        String name;
 //        String manufacturer;
 //        String color;
 //
-//        System.out.print("Price: ");
-//        price = Input.inputInt(in, MIN_PRICE, MAX_PRICE);
 //        System.out.print("Name: ");
-//        name = Input.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+//        name = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
 //        System.out.print("Manufacturer: ");
-//        manufacturer = Input.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+//        manufacturer = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+//        System.out.print("Price: ");
+//        price = MyInput.inputInt(in, MIN_PRICE, MAX_PRICE);
 //        System.out.print("Color: ");
-//        color = Input.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+//        color = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
 //
-//        part.setPrice(price);
-//        part.setName(name);
-//        part.setManufacturer(manufacturer);
-//        part.setColor(color);
+//        hardwarePart.setPrice(price);
+//        hardwarePart.setName(name);
+//        hardwarePart.setManufacturer(manufacturer);
+//        hardwarePart.setColor(color);
     }
 
     private HardwarePart addPartCase(Scanner in, Scanner inString) {
@@ -63,7 +276,7 @@ public class Store {
         double weight;
         boolean backlight = false;
 
-        HardwarePartCase partCase = new HardwarePartCase("Case");
+        HardwarePartCase partCase = new HardwarePartCase(TypesOfHardware.CASE.toString());
 
         partSetGeneralAttr(partCase, in, inString);
 
@@ -88,7 +301,7 @@ public class Store {
         int maxNoiseLevel;
         boolean backlight = false;
 
-        HardwarePartCooler partCooler = new HardwarePartCooler("Cooler");
+        HardwarePartCooler partCooler = new HardwarePartCooler(TypesOfHardware.COOLER.toString());
 
         partSetGeneralAttr(partCooler, in, inString);
 
@@ -114,7 +327,7 @@ public class Store {
         int cores;
         double maxFrequency;
 
-        HardwarePartCPU partCPU = new HardwarePartCPU("CPU");
+        HardwarePartCPU partCPU = new HardwarePartCPU(TypesOfHardware.CPU.toString());
 
         partSetGeneralAttr(partCPU, in, inString);
 
@@ -141,7 +354,7 @@ public class Store {
         int memory;
         int powerConsumption;
 
-        HardwarePartGPU partGPU = new HardwarePartGPU("GPU");
+        HardwarePartGPU partGPU = new HardwarePartGPU(TypesOfHardware.GPU.toString());
 
         partSetGeneralAttr(partGPU, in, inString);
 
@@ -165,7 +378,7 @@ public class Store {
         int maxMemoryAmount;
         String formFactor;
 
-        HardwarePartMotherboard partMotherboard = new HardwarePartMotherboard("Motherboard");
+        HardwarePartMotherboard partMotherboard = new HardwarePartMotherboard(TypesOfHardware.MOTHERBOARD.toString());
 
         partSetGeneralAttr(partMotherboard, in, inString);
 
@@ -187,7 +400,7 @@ public class Store {
 
         int powerAmount;
 
-        HardwarePartPowerSupply partPowerSupply = new HardwarePartPowerSupply("Power supply");
+        HardwarePartPowerSupply partPowerSupply = new HardwarePartPowerSupply(TypesOfHardware.POWER_SUPPLY.toString());
 
         partSetGeneralAttr(partPowerSupply, in, inString);
 
@@ -204,7 +417,7 @@ public class Store {
         int memory;
         double throughput;
 
-        HardwarePartRAM partRAM = new HardwarePartRAM("RAM");
+        HardwarePartRAM partRAM = new HardwarePartRAM(TypesOfHardware.RAM.toString());
 
         partSetGeneralAttr(partRAM, in, inString);
 
@@ -224,7 +437,7 @@ public class Store {
         String connector;
         int memory;
 
-        HardwarePartSSD partSSD = new HardwarePartSSD("SSD");
+        HardwarePartSSD partSSD = new HardwarePartSSD(TypesOfHardware.SSD.toString());
 
         partSetGeneralAttr(partSSD, in, inString);
 

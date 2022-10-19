@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartRAM extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartRAM extends HardwarePart implements Serializable {
 
     private int memory;
     private double throughput;

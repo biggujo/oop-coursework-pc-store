@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartMotherboard extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartMotherboard extends HardwarePart implements Serializable {
 
     private String socket;
     private int maxMemoryAmount;

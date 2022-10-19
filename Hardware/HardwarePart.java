@@ -1,9 +1,11 @@
 package Hardware;
 
+import java.io.Serializable;
+
 /**
  * Basic class for computer part unit
  */
-public class HardwarePart {
+public class HardwarePart implements Serializable {
 
     private String partType;
     private int price;
@@ -58,5 +60,10 @@ public class HardwarePart {
 
     public String getPartType() {
         return partType;
+    }
+
+    public String toString() {
+
+        return partType + ',' + name + ',' + manufacturer + ',' + price + ',' + color;
     }
 }

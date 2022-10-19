@@ -1,3 +1,5 @@
+package Utils;
+
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -43,7 +45,7 @@ public class MyFiles {
         }
     }
 
-    // Save one object to file
+    // Save all objects from file
     public static <T> boolean serializeObject(T obj, File file, boolean append) {
 
         try (FileOutputStream fileOS = new FileOutputStream(file, append);
@@ -57,6 +59,26 @@ public class MyFiles {
             System.out.println("Error saving to " + file.getPath());
             return false;
         }
+    }
+
+    // Read one object from file
+    public static <T> T deserializeObject(File file) {
+
+        try (FileInputStream fileIS = new FileInputStream(file);
+             ObjectInputStream ois = new ObjectInputStream(fileIS)) {
+
+            return (T) ois.readObject();
+        }
+        catch (FileNotFoundException e) {
+
+            System.out.println("Error reading from " + file.getPath());
+        }
+        catch (IOException ignored) {}
+        catch (ClassNotFoundException e) {
+
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
     // Read one object from file

@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartCase extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartCase extends HardwarePart implements Serializable {
 
     private String formFactorCompatibility;
     private double weight;
@@ -40,5 +42,10 @@ public class HardwarePartCase extends HardwarePart {
 
     public void setBacklight(boolean backlight) {
         this.backlight = backlight;
+    }
+
+    public String toString() {
+
+        return super.toString() + ',' + '{' + formFactorCompatibility + ',' + weight + ',' + backlight + '}';
     }
 }

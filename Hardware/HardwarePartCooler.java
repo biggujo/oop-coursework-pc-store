@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartCooler extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartCooler extends HardwarePart implements Serializable {
 
     private int rpm;
     private int maxNoiseLevel;

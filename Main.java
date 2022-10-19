@@ -1,4 +1,6 @@
 import Users.*;
+import Utils.MyFiles;
+import Utils.MyInput;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -26,7 +28,7 @@ public class Main {
 
         ArrayList<User> userArrayList = new ArrayList<>();
 
-        MyFiles.deserializeAllObjects(userArrayList, fileUsersDB);
+        if (fileUsersDB.length() > 0) userArrayList = MyFiles.deserializeArrayList(fileUsersDB);
 
         System.out.println(store.getName());
 
@@ -46,7 +48,7 @@ public class Main {
 
                     if (userLoggedIn != null) {
 
-                        // TODO: run store
+                        store.run(userLoggedIn, userArrayList);
                     }
                     else System.out.println("Such user was not found!");
                     break;
@@ -85,13 +87,12 @@ public class Main {
                             break;
                     }
 
-                    // Save new user
-                    MyFiles.serializeObject(userArrayList.get(userArrayList.size() - 1), fileUsersDB, true);
-
                     break;
 
                 // Exit
                 case 0:
+
+                    MyFiles.serializeArrayList(userArrayList, fileUsersDB, false);
                     System.exit(0);
             }
         }
@@ -109,6 +110,7 @@ public class Main {
         String phone;
         String jobTitle;
         String password;
+        int salary;
 
         System.out.println("Registering a new manager!");
 
@@ -126,14 +128,28 @@ public class Main {
         birthMonth = MyInput.inputInt(in, 1, 12);
         System.out.print("Year: ");
         birthYear = MyInput.inputInt(in, 1900, 2004);
-        System.out.print("Job title (1 - Trainee, 2 - Worker, 3 - Loader): ");
+        System.out.print("Job title (1 - Trainee, 2 - Junior, 3 - Senior): ");
         int tmpInt = MyInput.inputInt(in, 1, 3);
 
         switch (tmpInt) {
-            case 1: jobTitle = "Trainee"; break;
-            case 2: jobTitle = "Worker";  break;
-            case 3: jobTitle = "Loader";  break;
-            default: jobTitle = "Unnamed";
+            case 1:
+
+                jobTitle = "Trainee";
+                salary = 10000;
+                break;
+            case 2:
+
+                jobTitle = "Junior";
+                salary = 15000;
+                break;
+            case 3:
+
+                jobTitle = "Senior";
+                salary = 25000;
+                break;
+            default:
+                jobTitle = "Unnamed";
+                salary = 3500;
         }
 
         System.out.print("Phone: +380");
@@ -143,7 +159,7 @@ public class Main {
 
         birthDate = LocalDate.of(birthYear, birthMonth, birthDay);
 
-        managerArrayList.add(new Manager(firstName, surName, middleName, birthDate, jobTitle, phone, password));
+        managerArrayList.add(new Manager(firstName, surName, middleName, birthDate, jobTitle, phone, password, salary));
     }
 
     private static void registerCustomer(ArrayList<User> customerArrayList, Scanner inString) {

@@ -1,6 +1,8 @@
 package Hardware;
 
-public class HardwarePartCPU extends HardwarePart {
+import java.io.Serializable;
+
+public class HardwarePartCPU extends HardwarePart implements Serializable {
 
     private String socket;
     private int generation;
