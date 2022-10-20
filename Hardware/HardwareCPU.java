@@ -2,19 +2,19 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartCPU extends HardwarePart implements Serializable {
+public class HardwareCPU extends Hardware implements Serializable {
 
     private String socket;
     private int generation;
     private int cores;
     private double maxFrequency;
 
-    public HardwarePartCPU(String partType) {
+    public HardwareCPU(String partType) {
         super(partType);
     }
 
-    public HardwarePartCPU(String partType, int price, String name, String manufacturer, String color, String socket,
-                           int generation, int cores, double maxFrequency) {
+    public HardwareCPU(String partType, int price, String name, String manufacturer, String color, String socket,
+                       int generation, int cores, double maxFrequency) {
         super(partType, price, name, manufacturer, color);
 
         this.socket = socket;

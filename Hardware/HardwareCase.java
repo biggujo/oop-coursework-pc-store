@@ -2,18 +2,18 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartCase extends HardwarePart implements Serializable {
+public class HardwareCase extends Hardware implements Serializable {
 
     private String formFactorCompatibility;
     private double weight;
     private boolean backlight;
 
-    public HardwarePartCase(String partType) {
+    public HardwareCase(String partType) {
         super(partType);
     }
 
-    public HardwarePartCase(String partType, int price, String name, String manufacturer, String color,
-                            String formFactorCompatibility, double weight, boolean backlight) {
+    public HardwareCase(String partType, int price, String name, String manufacturer, String color,
+                        String formFactorCompatibility, double weight, boolean backlight) {
         super(partType, price, name, manufacturer, color);
         this.formFactorCompatibility = formFactorCompatibility;
         this.weight = weight;

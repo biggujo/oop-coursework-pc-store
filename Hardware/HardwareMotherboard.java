@@ -2,18 +2,18 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartMotherboard extends HardwarePart implements Serializable {
+public class HardwareMotherboard extends Hardware implements Serializable {
 
     private String socket;
     private int maxMemoryAmount;
     private String formFactor;
 
-    public HardwarePartMotherboard(String partType) {
+    public HardwareMotherboard(String partType) {
         super(partType);
     }
 
-    public HardwarePartMotherboard(String partType, int price, String name, String manufacturer, String color, String socket,
-                                   int maxMemoryAmount, String formFactor) {
+    public HardwareMotherboard(String partType, int price, String name, String manufacturer, String color, String socket,
+                               int maxMemoryAmount, String formFactor) {
         super(partType, price, name, manufacturer, color);
         this.socket = socket;
         this.maxMemoryAmount = maxMemoryAmount;

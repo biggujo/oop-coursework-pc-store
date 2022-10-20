@@ -1,24 +1,26 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 /**
  * Basic class for computer part unit
  */
-public class HardwarePart implements Serializable {
+public class Hardware implements Serializable {
 
     private String partType;
     private int price;
     private String name;
     private String manufacturer;
     private String color;
+    private LocalDate saleDate;
 
-    public HardwarePart(String partType) {
+    public Hardware(String partType) {
 
         this.partType = partType;
     }
 
-    public HardwarePart(String partType, int price, String name, String manufacturer, String color) {
+    public Hardware(String partType, int price, String name, String manufacturer, String color) {
         this.partType = partType;
         this.price = price;
         this.name = name;
@@ -56,6 +58,14 @@ public class HardwarePart implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public LocalDate getSaleDate() {
+        return saleDate;
+    }
+
+    public void setSaleDate(LocalDate saleDate) {
+        this.saleDate = saleDate;
     }
 
     public String getPartType() {

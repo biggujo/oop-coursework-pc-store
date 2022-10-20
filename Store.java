@@ -35,9 +35,9 @@ public class Store {
         in.useLocale(Locale.US);
 
         // List of computer parts
-        ArrayList<HardwarePart> hardwarePartArrayList = new ArrayList<>();
+        ArrayList<Hardware> hardwareArrayList = new ArrayList<>();
 
-        if (fileHardwareDB.length() > 0) hardwarePartArrayList = MyFiles.deserializeArrayList(fileHardwareDB);
+        if (fileHardwareDB.length() > 0) hardwareArrayList = MyFiles.deserializeArrayList(fileHardwareDB);
 
         System.out.println("Store menu:");
 
@@ -73,42 +73,42 @@ public class Store {
 
                             case 1:
 
-                                hardwarePartArrayList.add(addPartCase(in, inString));
+                                hardwareArrayList.add(addPartCase(in, inString));
                                 break;
 
                             case 2:
 
-                                hardwarePartArrayList.add(addPartCooler(in, inString));
+                                hardwareArrayList.add(addPartCooler(in, inString));
                                 break;
 
                             case 3:
 
-                                hardwarePartArrayList.add(addPartCPU(in, inString));
+                                hardwareArrayList.add(addPartCPU(in, inString));
                                 break;
 
                             case 4:
 
-                                hardwarePartArrayList.add(addPartGPU(in, inString));
+                                hardwareArrayList.add(addPartGPU(in, inString));
                                 break;
 
                             case 5:
 
-                                hardwarePartArrayList.add(addPartRAM(in, inString));
+                                hardwareArrayList.add(addPartRAM(in, inString));
                                 break;
 
                             case 6:
 
-                                hardwarePartArrayList.add(addPartSSD(in, inString));
+                                hardwareArrayList.add(addPartSSD(in, inString));
                                 break;
 
                             case 7:
 
-                                hardwarePartArrayList.add(addPartMotherboard(in, inString));
+                                hardwareArrayList.add(addPartMotherboard(in, inString));
                                 break;
 
                             case 8:
 
-                                hardwarePartArrayList.add(addPartPowerSupply(in, inString));
+                                hardwareArrayList.add(addPartPowerSupply(in, inString));
                                 break;
                         }
 
@@ -124,7 +124,7 @@ public class Store {
                     // Print some stock
                     case 3:
 
-                        if (hardwarePartArrayList.size() == 0) {
+                        if (hardwareArrayList.size() == 0) {
 
                             System.out.println("Add some hardware first!");
                             break;
@@ -183,7 +183,7 @@ public class Store {
                         }
 
                         // Print parts of given type
-                        for (HardwarePart h: hardwarePartArrayList) {
+                        for (Hardware h: hardwareArrayList) {
                             if (h.getPartType().equals(partTypeToFind)) {
 
                                 System.out.println(h);
@@ -194,13 +194,13 @@ public class Store {
                     // Print all stock
                     case 4:
 
-                        if (hardwarePartArrayList.size() == 0) {
+                        if (hardwareArrayList.size() == 0) {
 
                             System.out.println("Add some hardware first!");
                             break;
                         }
 
-                        for (HardwarePart h: hardwarePartArrayList) {
+                        for (Hardware h: hardwareArrayList) {
                             System.out.println(h);
                         }
                         break;
@@ -208,13 +208,15 @@ public class Store {
                     // Close store
                     case 0:
 
-                        MyFiles.serializeArrayList(hardwarePartArrayList, fileHardwareDB, false);
+                        MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false);
                         return;
                 }
             }
         }
 
         if (currentUser.getType().equals(TypesOfUsers.ADMIN.toString())) {
+
+            ArrayList<Integer> indexArrayListOfClass;
 
             System.out.println("1 - View managers");
             System.out.println("2 - View customers");
@@ -230,16 +232,47 @@ public class Store {
 
                 switch (MyInput.inputInt(in, 0, 5)) {
 
+                    // 1 - View managers
+                    case 1:
+
+                        System.out.println("1 - View managers");
+
+                        for (int i = 0, j = 0, tmpSize = userArrayList.size(); i < tmpSize; i++) {
+
+                            User u = userArrayList.get(i);
+                            if (u.getType().equals(TypesOfUsers.MANAGER.toString())) {
+
+                                System.out.printf("%d,%s\n", ++j, u);
+                            }
+                        }
+                        break;
+
+                    // 2 - View customers
+                    case 2:
+
+                        System.out.println("2 - View customers");
+
+                        break;
+
+                    // 3 - Print manager sales
+                    case 3:
+
+                        System.out.println("3 - Print manager sales");
+
+                        indexArrayListOfClass = returnIndexesOfClass(userArrayList, TypesOfUsers.MANAGER.toString());
+
+                        System.out.println();
+
+                        break;
+
                     case 4:
 
-                        userArrayList.remove(0);
-                        userArrayList.remove(0);
-                        return;
+                        break;
 
                     // Close store
                     case 0:
 
-                        MyFiles.serializeArrayList(hardwarePartArrayList, fileHardwareDB, false);
+                        MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false);
                         return;
                 }
             }
@@ -248,7 +281,7 @@ public class Store {
     }
 
     // Set shared attributes
-    private void partSetGeneralAttr(HardwarePart hardwarePart, Scanner in, Scanner inString) {
+    private void partSetGeneralAttr(Hardware hardware, Scanner in, Scanner inString) {
 
 //        int price;
 //        String name;
@@ -270,13 +303,13 @@ public class Store {
 //        hardwarePart.setColor(color);
     }
 
-    private HardwarePart addPartCase(Scanner in, Scanner inString) {
+    private Hardware addPartCase(Scanner in, Scanner inString) {
 
         String formFactor;
         double weight;
         boolean backlight = false;
 
-        HardwarePartCase partCase = new HardwarePartCase(TypesOfHardware.CASE.toString());
+        HardwareCase partCase = new HardwareCase(TypesOfHardware.CASE.toString());
 
         partSetGeneralAttr(partCase, in, inString);
 
@@ -295,13 +328,13 @@ public class Store {
         return partCase;
     }
 
-    private HardwarePart addPartCooler(Scanner in, Scanner inString) {
+    private Hardware addPartCooler(Scanner in, Scanner inString) {
 
         int rpm;
         int maxNoiseLevel;
         boolean backlight = false;
 
-        HardwarePartCooler partCooler = new HardwarePartCooler(TypesOfHardware.COOLER.toString());
+        HardwareCooler partCooler = new HardwareCooler(TypesOfHardware.COOLER.toString());
 
         partSetGeneralAttr(partCooler, in, inString);
 
@@ -320,14 +353,14 @@ public class Store {
         return partCooler;
     }
 
-    private HardwarePart addPartCPU(Scanner in, Scanner inString) {
+    private Hardware addPartCPU(Scanner in, Scanner inString) {
 
         String socket;
         int generation;
         int cores;
         double maxFrequency;
 
-        HardwarePartCPU partCPU = new HardwarePartCPU(TypesOfHardware.CPU.toString());
+        HardwareCPU partCPU = new HardwareCPU(TypesOfHardware.CPU.toString());
 
         partSetGeneralAttr(partCPU, in, inString);
 
@@ -348,13 +381,13 @@ public class Store {
         return partCPU;
     }
 
-    private HardwarePart addPartGPU(Scanner in, Scanner inString) {
+    private Hardware addPartGPU(Scanner in, Scanner inString) {
 
         int frequency;
         int memory;
         int powerConsumption;
 
-        HardwarePartGPU partGPU = new HardwarePartGPU(TypesOfHardware.GPU.toString());
+        HardwareGPU partGPU = new HardwareGPU(TypesOfHardware.GPU.toString());
 
         partSetGeneralAttr(partGPU, in, inString);
 
@@ -372,13 +405,13 @@ public class Store {
         return partGPU;
     }
 
-    private HardwarePart addPartMotherboard(Scanner in, Scanner inString) {
+    private Hardware addPartMotherboard(Scanner in, Scanner inString) {
 
         String socket;
         int maxMemoryAmount;
         String formFactor;
 
-        HardwarePartMotherboard partMotherboard = new HardwarePartMotherboard(TypesOfHardware.MOTHERBOARD.toString());
+        HardwareMotherboard partMotherboard = new HardwareMotherboard(TypesOfHardware.MOTHERBOARD.toString());
 
         partSetGeneralAttr(partMotherboard, in, inString);
 
@@ -396,11 +429,11 @@ public class Store {
         return partMotherboard;
     }
 
-    private HardwarePart addPartPowerSupply(Scanner in, Scanner inString) {
+    private Hardware addPartPowerSupply(Scanner in, Scanner inString) {
 
         int powerAmount;
 
-        HardwarePartPowerSupply partPowerSupply = new HardwarePartPowerSupply(TypesOfHardware.POWER_SUPPLY.toString());
+        HardwarePowerSupply partPowerSupply = new HardwarePowerSupply(TypesOfHardware.POWER_SUPPLY.toString());
 
         partSetGeneralAttr(partPowerSupply, in, inString);
 
@@ -412,12 +445,12 @@ public class Store {
         return partPowerSupply;
     }
 
-    private HardwarePart addPartRAM(Scanner in, Scanner inString) {
+    private Hardware addPartRAM(Scanner in, Scanner inString) {
 
         int memory;
         double throughput;
 
-        HardwarePartRAM partRAM = new HardwarePartRAM(TypesOfHardware.RAM.toString());
+        HardwareRAM partRAM = new HardwareRAM(TypesOfHardware.RAM.toString());
 
         partSetGeneralAttr(partRAM, in, inString);
 
@@ -432,12 +465,12 @@ public class Store {
         return partRAM;
     }
 
-    private HardwarePart addPartSSD(Scanner in, Scanner inString) {
+    private Hardware addPartSSD(Scanner in, Scanner inString) {
 
         String connector;
         int memory;
 
-        HardwarePartSSD partSSD = new HardwarePartSSD(TypesOfHardware.SSD.toString());
+        HardwareSSD partSSD = new HardwareSSD(TypesOfHardware.SSD.toString());
 
         partSetGeneralAttr(partSSD, in, inString);
 
@@ -451,6 +484,25 @@ public class Store {
 
         return partSSD;
     }
+
+    // Return ArrayList of indexes of some class instances in other ArrayList
+    private ArrayList<Integer> returnIndexesOfClass(ArrayList<User> userArrayList, String type) {
+
+        // Array to store indexes of managers
+        ArrayList<Integer> indexArrayList = new ArrayList<>();
+
+        for (int i = 0; i < userArrayList.size(); i++) {
+
+            if (userArrayList.get(i).getType().equals(type)) {
+
+                indexArrayList.add(i);
+            }
+        }
+
+        return indexArrayList;
+    }
+
+//    private
 
     public String getName() {
         return name;

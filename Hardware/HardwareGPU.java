@@ -2,18 +2,18 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartGPU extends HardwarePart implements Serializable {
+public class HardwareGPU extends Hardware implements Serializable {
 
     private int frequency;
     private int memory;
     private int powerConsumption;
 
-    public HardwarePartGPU(String partType) {
+    public HardwareGPU(String partType) {
         super(partType);
     }
 
-    public HardwarePartGPU(String partType, int price, String name, String manufacturer, String color, int frequency,
-                           int memory, int powerConsumption) {
+    public HardwareGPU(String partType, int price, String name, String manufacturer, String color, int frequency,
+                       int memory, int powerConsumption) {
         super(partType, price, name, manufacturer, color);
         this.frequency = frequency;
         this.memory = memory;

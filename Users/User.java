@@ -47,4 +47,9 @@ public class User implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String toString() {
+
+        return type + ',' + firstName + ',' + surName + ',' + password;
+    }
 }

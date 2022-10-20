@@ -2,18 +2,18 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartCooler extends HardwarePart implements Serializable {
+public class HardwareCooler extends Hardware implements Serializable {
 
     private int rpm;
     private int maxNoiseLevel;
     private boolean backlight;
 
-    public HardwarePartCooler(String partType) {
+    public HardwareCooler(String partType) {
         super(partType);
     }
 
-    public HardwarePartCooler(String partType, int price, String name, String manufacturer, String color, int rpm,
-                              int maxNoiseLevel, boolean backlight) {
+    public HardwareCooler(String partType, int price, String name, String manufacturer, String color, int rpm,
+                          int maxNoiseLevel, boolean backlight) {
         super(partType, price, name, manufacturer, color);
         this.rpm = rpm;
         this.maxNoiseLevel = maxNoiseLevel;

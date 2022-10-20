@@ -28,11 +28,20 @@ public class Main {
 
         ArrayList<User> userArrayList = new ArrayList<>();
 
-        if (fileUsersDB.length() > 0) userArrayList = MyFiles.deserializeArrayList(fileUsersDB);
+//        if (fileUsersDB.length() > 0) userArrayList = MyFiles.deserializeArrayList(fileUsersDB);
 
         System.out.println(store.getName());
 
         while (true) {
+
+            // TODO: Delete
+            userArrayList.add(new Admin("admin", "admin", "111"));
+            userArrayList.add(new Manager("first1", "sur1", "middle1", LocalDate.of(2001,1,1),"Junior1",
+                    "+380123123123", "123", 15000));
+            userArrayList.add(new Customer("first1", "sur1", "+380678654444", "111"));
+            userArrayList.add(new Manager("first2", "sur2", "middle2", LocalDate.of(2002,2,2),"Junior2",
+                    "+380123123123", "123", 18000));
+            userArrayList.add(new Customer("first2", "sur2", "+380678654444", "111"));
 
             System.out.println("Choose action:");
             System.out.println("1 - Login");
@@ -228,7 +237,7 @@ public class Main {
                     System.out.println("Succeeded login!");
                     System.out.println("Welcome, " + login);
                     success = true;
-                }
+                } else System.out.println("Incorrect password. Please, try again:");
             }
             return curLoginUser;
         } else return null;

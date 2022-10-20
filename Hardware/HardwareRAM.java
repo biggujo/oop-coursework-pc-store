@@ -2,17 +2,17 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartRAM extends HardwarePart implements Serializable {
+public class HardwareRAM extends Hardware implements Serializable {
 
     private int memory;
     private double throughput;
 
-    public HardwarePartRAM(String partType) {
+    public HardwareRAM(String partType) {
         super(partType);
     }
 
-    public HardwarePartRAM(String partType, int price, String name, String manufacturer, String color,
-                           int memory, double throughput) {
+    public HardwareRAM(String partType, int price, String name, String manufacturer, String color,
+                       int memory, double throughput) {
         super(partType, price, name, manufacturer, color);
         this.memory = memory;
         this.throughput = throughput;

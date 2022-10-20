@@ -1,6 +1,6 @@
 package Users;
 
-import Hardware.HardwarePart;
+import Hardware.Hardware;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -13,7 +13,7 @@ public class Manager extends User implements Serializable {
     private String jobTitle;
     private String phone;
     private int salary;
-    private ArrayList<HardwarePart> soldParts = new ArrayList<>();
+    private ArrayList<Hardware> soldParts = new ArrayList<>();
 
     public Manager(String firstName, String surName, String middleName, LocalDate birthDate, String jobTitle,
                    String phone, String password, int salary) {
@@ -55,5 +55,20 @@ public class Manager extends User implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String toString() {
+
+        return super.getType() + ',' + super.getFirstName() + ',' + super.getSurName() + ',' + middleName + ',' +
+                birthDate.toString() + ',' + jobTitle + ',' + phone + ',' + salary + ',' + super.getPassword() +
+                ',' + "Sales: " + soldParts.size();
+    }
+    
+    public void soldPartsToString() {
+
+        for (Hardware h :
+                soldParts) {
+            System.out.println(h);
+        }
     }
 }

@@ -2,16 +2,16 @@ package Hardware;
 
 import java.io.Serializable;
 
-public class HardwarePartSSD extends HardwarePart implements Serializable {
+public class HardwareSSD extends Hardware implements Serializable {
 
     private String connector;
     private int memory;
 
-    public HardwarePartSSD(String partType) {
+    public HardwareSSD(String partType) {
         super(partType);
     }
 
-    public HardwarePartSSD(String partType, int price, String name, String manufacturer, String color, String connector, int memory) {
+    public HardwareSSD(String partType, int price, String name, String manufacturer, String color, String connector, int memory) {
         super(partType, price, name, manufacturer, color);
         this.connector = connector;
         this.memory = memory;
