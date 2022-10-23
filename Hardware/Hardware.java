@@ -1,31 +1,33 @@
 package Hardware;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.StringJoiner;
 
 /**
  * Basic class for computer part unit
  */
 public class Hardware implements Serializable {
 
-    private String partType;
+    private TypesOfHardware type;
     private int price;
     private String name;
     private String manufacturer;
     private String color;
-    private LocalDate saleDate;
 
-    public Hardware(String partType) {
+    private int saleYear;
+    private int saleMonth;
 
-        this.partType = partType;
+    public Hardware(TypesOfHardware type) {
+
+        this.type = type;
     }
 
-    public Hardware(String partType, int price, String name, String manufacturer, String color) {
-        this.partType = partType;
+    public Hardware(TypesOfHardware type, int price, String name, String manufacturer, String color) {
+        this.type = type;
         this.price = price;
-        this.name = name;
-        this.manufacturer = manufacturer;
-        this.color = color;
+        this.name = quotationIfComma(name);
+        this.manufacturer = quotationIfComma(manufacturer);
+        this.color = quotationIfComma(color);
     }
 
     public int getPrice() {
@@ -60,20 +62,48 @@ public class Hardware implements Serializable {
         this.color = color;
     }
 
-    public LocalDate getSaleDate() {
-        return saleDate;
+    public int getSaleYear() {
+        return saleYear;
     }
 
-    public void setSaleDate(LocalDate saleDate) {
-        this.saleDate = saleDate;
+    public void setSaleYear(int saleYear) {
+        this.saleYear = saleYear;
     }
 
-    public String getPartType() {
-        return partType;
+    public int getSaleMonth() {
+        return saleMonth;
+    }
+
+    public void setSaleMonth(int saleMonth) {
+        this.saleMonth = saleMonth;
+    }
+
+    public TypesOfHardware getType() {
+        return type;
     }
 
     public String toString() {
 
-        return partType + ',' + name + ',' + manufacturer + ',' + price + ',' + color;
+        StringJoiner stringJoiner = new StringJoiner(",");
+
+
+        if (saleMonth != 0 && saleYear != 0) {
+
+            String soldDate = String.format("SOLD:%02d.%4d", saleMonth, saleYear);
+
+            stringJoiner.add(type.toString()).add(soldDate).add(name).
+                    add(manufacturer).add(Integer.toString(price)).add(color);
+        }
+        else {
+            stringJoiner.add(type.toString()).add(name).add(manufacturer).add(Integer.toString(price)).add(color);
+        }
+
+        return stringJoiner.toString();
+    }
+
+    // Quote a string if contains commas
+    public static String quotationIfComma(String string) {
+
+        return string.contains(",") ? '"' + string + '"' : string;
     }
 }

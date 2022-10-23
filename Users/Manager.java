@@ -12,12 +12,13 @@ public class Manager extends User implements Serializable {
     private LocalDate birthDate;
     private String jobTitle;
     private String phone;
+
     private int salary;
     private ArrayList<Hardware> soldParts = new ArrayList<>();
 
     public Manager(String firstName, String surName, String middleName, LocalDate birthDate, String jobTitle,
                    String phone, String password, int salary) {
-        super(TypesOfUsers.MANAGER.toString(), firstName, surName, password);
+        super(TypesOfUsers.MANAGER, firstName, surName, password);
         this.middleName = middleName;
         this.birthDate = birthDate;
         this.jobTitle = jobTitle;
@@ -57,9 +58,32 @@ public class Manager extends User implements Serializable {
         this.phone = phone;
     }
 
+    public int getSalary() {
+        return salary;
+    }
+
+    public void setSalary(int salary) {
+        this.salary = salary;
+    }
+
+    public Hardware getSold(int index) {
+
+        return soldParts.get(index);
+    }
+
+    public void addSold(Hardware hardware) {
+
+        soldParts.add(hardware);
+    }
+
+    public ArrayList<Hardware> getSoldParts() {
+
+        return soldParts;
+    }
+
     public String toString() {
 
-        return super.getType() + ',' + super.getFirstName() + ',' + super.getSurName() + ',' + middleName + ',' +
+        return super.getType().toString() + ',' + super.getFirstName() + ',' + super.getSurName() + ',' + middleName + ',' +
                 birthDate.toString() + ',' + jobTitle + ',' + phone + ',' + salary + ',' + super.getPassword() +
                 ',' + "Sales: " + soldParts.size();
     }

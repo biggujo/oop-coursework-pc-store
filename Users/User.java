@@ -4,12 +4,12 @@ import java.io.Serializable;
 
 public class User implements Serializable {
 
-    private String type;
+    private TypesOfUsers type;
     private String firstName;
     private String surName;
     private String password;
 
-    public User(String type, String firstName, String surName, String password) {
+    public User(TypesOfUsers type, String firstName, String surName, String password) {
         this.type = type;
         this.firstName = firstName;
         this.surName = surName;
@@ -40,16 +40,12 @@ public class User implements Serializable {
         this.password = password;
     }
 
-    public String getType() {
+    public TypesOfUsers getType() {
         return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String toString() {
 
-        return type + ',' + firstName + ',' + surName + ',' + password;
+        return type.toString() + ',' + firstName + ',' + surName + ',' + password;
     }
 }

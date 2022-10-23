@@ -1,19 +1,20 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class HardwareSSD extends Hardware implements Serializable {
 
     private String connector;
     private int memory;
 
-    public HardwareSSD(String partType) {
-        super(partType);
+    public HardwareSSD() {
+        super(TypesOfHardware.SSD);
     }
 
-    public HardwareSSD(String partType, int price, String name, String manufacturer, String color, String connector, int memory) {
-        super(partType, price, name, manufacturer, color);
-        this.connector = connector;
+    public HardwareSSD(int price, String name, String manufacturer, String color, String connector, int memory) {
+        super(TypesOfHardware.SSD, price, name, manufacturer, color);
+        this.connector = quotationIfComma(connector);
         this.memory = memory;
     }
 
@@ -31,6 +32,15 @@ public class HardwareSSD extends Hardware implements Serializable {
 
     public void setMemory(int memory) {
         this.memory = memory;
+    }
+
+    public String toString() {
+
+        StringJoiner stringJoiner = new StringJoiner(",", super.toString() + ",{", "}");
+
+        stringJoiner.add(connector).add(Integer.toString(memory));
+
+        return stringJoiner.toString();
     }
 
 }

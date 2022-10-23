@@ -1,6 +1,7 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class HardwareMotherboard extends Hardware implements Serializable {
 
@@ -8,16 +9,16 @@ public class HardwareMotherboard extends Hardware implements Serializable {
     private int maxMemoryAmount;
     private String formFactor;
 
-    public HardwareMotherboard(String partType) {
-        super(partType);
+    public HardwareMotherboard() {
+        super(TypesOfHardware.MOTHERBOARD);
     }
 
-    public HardwareMotherboard(String partType, int price, String name, String manufacturer, String color, String socket,
+    public HardwareMotherboard(int price, String name, String manufacturer, String color, String socket,
                                int maxMemoryAmount, String formFactor) {
-        super(partType, price, name, manufacturer, color);
-        this.socket = socket;
+        super(TypesOfHardware.MOTHERBOARD, price, name, manufacturer, color);
+        this.socket = quotationIfComma(socket);
         this.maxMemoryAmount = maxMemoryAmount;
-        this.formFactor = formFactor;
+        this.formFactor = quotationIfComma(formFactor);
     }
 
     public String getSocket() {
@@ -42,5 +43,14 @@ public class HardwareMotherboard extends Hardware implements Serializable {
 
     public void setFormFactor(String formFactor) {
         this.formFactor = formFactor;
+    }
+
+    public String toString() {
+
+        StringJoiner stringJoiner = new StringJoiner(",", super.toString() + ",{", "}");
+
+        stringJoiner.add(socket).add(Integer.toString(maxMemoryAmount)).add(formFactor);
+
+        return stringJoiner.toString();
     }
 }

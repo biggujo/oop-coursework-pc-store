@@ -28,20 +28,20 @@ public class Main {
 
         ArrayList<User> userArrayList = new ArrayList<>();
 
-//        if (fileUsersDB.length() > 0) userArrayList = MyFiles.deserializeArrayList(fileUsersDB);
+        if (fileUsersDB.length() > 0) userArrayList = MyFiles.deserializeArrayList(fileUsersDB);
 
         System.out.println(store.getName());
 
         while (true) {
 
             // TODO: Delete
-            userArrayList.add(new Admin("admin", "admin", "111"));
-            userArrayList.add(new Manager("first1", "sur1", "middle1", LocalDate.of(2001,1,1),"Junior1",
-                    "+380123123123", "123", 15000));
-            userArrayList.add(new Customer("first1", "sur1", "+380678654444", "111"));
-            userArrayList.add(new Manager("first2", "sur2", "middle2", LocalDate.of(2002,2,2),"Junior2",
-                    "+380123123123", "123", 18000));
-            userArrayList.add(new Customer("first2", "sur2", "+380678654444", "111"));
+//            userArrayList.add(new Admin("aaa", "aaa", "111"));
+//            userArrayList.add(new Manager("mmm", "mmm", "middle1", LocalDate.of(2001,1,1),"Junior1",
+//                    "+380123123123", "111", 15000));
+//            userArrayList.add(new Customer("ccc", "ccc", "+380678654444", "111"));
+//            userArrayList.add(new Manager("first2", "sur2", "middle2", LocalDate.of(2002,2,2),"Junior2",
+//                    "+380123123123", "123", 18000));
+//            userArrayList.add(new Customer("first2", "sur2", "+380678654444", "111"));
 
             System.out.println("Choose action:");
             System.out.println("1 - Login");
@@ -57,7 +57,28 @@ public class Main {
 
                     if (userLoggedIn != null) {
 
-                        store.run(userLoggedIn, userArrayList);
+                        System.out.println("Type: " + userLoggedIn.getType().toString());
+
+                        switch (userLoggedIn.getType()) {
+                            case CUSTOMER:
+
+                                store.runAsCustomer(userLoggedIn, userArrayList);
+                                break;
+
+                            case MANAGER:
+
+                                store.runAsManager(userLoggedIn, userArrayList);
+                                break;
+
+                            case ADMIN:
+
+                                store.runAsAdmin(userLoggedIn, userArrayList);
+                                break;
+
+                            default:
+
+                                System.out.println("Error! Unknown type of user");
+                        }
                     }
                     else System.out.println("Such user was not found!");
                     break;

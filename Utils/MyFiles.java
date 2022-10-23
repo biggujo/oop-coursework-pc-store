@@ -105,6 +105,23 @@ public class MyFiles {
         }
     }
 
+    public static <T> boolean fileWriterArrayList(ArrayList<T> arrayList, File file) {
+
+        try (FileWriter fileWriter = new FileWriter(file)) {
+
+            for (T t :
+                    arrayList) {
+                fileWriter.write(t.toString() + '\n');
+            }
+            return true;
+        }
+        catch (IOException e) {
+
+            System.out.println("Error writing to " + file.getPath());
+            return false;
+        }
+    }
+
     // Create file and path if were not existed
     public static void createFile(File file) {
 

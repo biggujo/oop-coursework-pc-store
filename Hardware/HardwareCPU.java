@@ -1,6 +1,7 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class HardwareCPU extends Hardware implements Serializable {
 
@@ -9,15 +10,15 @@ public class HardwareCPU extends Hardware implements Serializable {
     private int cores;
     private double maxFrequency;
 
-    public HardwareCPU(String partType) {
-        super(partType);
+    public HardwareCPU() {
+        super(TypesOfHardware.CPU);
     }
 
-    public HardwareCPU(String partType, int price, String name, String manufacturer, String color, String socket,
+    public HardwareCPU(int price, String name, String manufacturer, String color, String socket,
                        int generation, int cores, double maxFrequency) {
-        super(partType, price, name, manufacturer, color);
+        super(TypesOfHardware.CPU, price, name, manufacturer, color);
 
-        this.socket = socket;
+        this.socket = quotationIfComma(socket);
         this.generation = generation;
         this.cores = cores;
         this.maxFrequency = maxFrequency;
@@ -53,5 +54,15 @@ public class HardwareCPU extends Hardware implements Serializable {
 
     public void setMaxFrequency(double maxFrequency) {
         this.maxFrequency = maxFrequency;
+    }
+
+    public String toString() {
+
+        StringJoiner stringJoiner = new StringJoiner(",", super.toString() + ",{", "}");
+
+        stringJoiner.add(socket).add(Integer.toString(generation)).add(Integer.toString(cores)).
+                add(Double.toString(maxFrequency));
+
+        return stringJoiner.toString();
     }
 }

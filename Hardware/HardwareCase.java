@@ -1,6 +1,7 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class HardwareCase extends Hardware implements Serializable {
 
@@ -8,14 +9,14 @@ public class HardwareCase extends Hardware implements Serializable {
     private double weight;
     private boolean backlight;
 
-    public HardwareCase(String partType) {
-        super(partType);
+    public HardwareCase() {
+        super(TypesOfHardware.CASE);
     }
 
-    public HardwareCase(String partType, int price, String name, String manufacturer, String color,
+    public HardwareCase(int price, String name, String manufacturer, String color,
                         String formFactorCompatibility, double weight, boolean backlight) {
-        super(partType, price, name, manufacturer, color);
-        this.formFactorCompatibility = formFactorCompatibility;
+        super(TypesOfHardware.CASE, price, name, manufacturer, color);
+        this.formFactorCompatibility = quotationIfComma(formFactorCompatibility);
         this.weight = weight;
         this.backlight = backlight;
     }
@@ -46,6 +47,10 @@ public class HardwareCase extends Hardware implements Serializable {
 
     public String toString() {
 
-        return super.toString() + ',' + '{' + formFactorCompatibility + ',' + weight + ',' + backlight + '}';
+        StringJoiner stringJoiner = new StringJoiner(",", super.toString() + ",{", "}");
+
+        stringJoiner.add(formFactorCompatibility).add(Double.toString(weight)).add(Boolean.toString(backlight));
+
+        return stringJoiner.toString();
     }
 }

@@ -1,6 +1,7 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class HardwareGPU extends Hardware implements Serializable {
 
@@ -8,13 +9,13 @@ public class HardwareGPU extends Hardware implements Serializable {
     private int memory;
     private int powerConsumption;
 
-    public HardwareGPU(String partType) {
-        super(partType);
+    public HardwareGPU() {
+        super(TypesOfHardware.GPU);
     }
 
-    public HardwareGPU(String partType, int price, String name, String manufacturer, String color, int frequency,
+    public HardwareGPU(int price, String name, String manufacturer, String color, int frequency,
                        int memory, int powerConsumption) {
-        super(partType, price, name, manufacturer, color);
+        super(TypesOfHardware.GPU, price, name, manufacturer, color);
         this.frequency = frequency;
         this.memory = memory;
         this.powerConsumption = powerConsumption;
@@ -42,5 +43,15 @@ public class HardwareGPU extends Hardware implements Serializable {
 
     public void setPowerConsumption(int powerConsumption) {
         this.powerConsumption = powerConsumption;
+    }
+
+    public String toString() {
+
+        StringJoiner stringJoiner = new StringJoiner(",", super.toString() + ",{", "}");
+
+        stringJoiner.add(Integer.toString(frequency)).add(Integer.toString(memory)).
+                add(Integer.toString(powerConsumption));
+
+        return stringJoiner.toString();
     }
 }

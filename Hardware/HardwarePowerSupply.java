@@ -1,17 +1,18 @@
 package Hardware;
 
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class HardwarePowerSupply extends Hardware implements Serializable {
 
     private int powerAmount;
 
-    public HardwarePowerSupply(String partType) {
-        super(partType);
+    public HardwarePowerSupply() {
+        super(TypesOfHardware.POWER_SUPPLY);
     }
 
-    public HardwarePowerSupply(String partType, int price, String name, String manufacturer, String color, int powerAmount) {
-        super(partType, price, name, manufacturer, color);
+    public HardwarePowerSupply(int price, String name, String manufacturer, String color, int powerAmount) {
+        super(TypesOfHardware.POWER_SUPPLY, price, name, manufacturer, color);
         this.powerAmount = powerAmount;
     }
 
@@ -21,5 +22,14 @@ public class HardwarePowerSupply extends Hardware implements Serializable {
 
     public void setPowerAmount(int powerAmount) {
         this.powerAmount = powerAmount;
+    }
+
+    public String toString() {
+
+        StringJoiner stringJoiner = new StringJoiner(",", super.toString() + ",{", "}");
+
+        stringJoiner.add(Integer.toString(powerAmount));
+
+        return stringJoiner.toString();
     }
 }
