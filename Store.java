@@ -94,13 +94,23 @@ public class Store {
                 // View hardware
                 case 1:
 
-                    // Call method to print hardware
-                    uiPrintHardware(hardwareArrayList, SHOW_IN_STOCK, in);
+                    if (hardwareArrayList.size() > 0) {
+
+                        // Call method to print hardware
+                        uiPrintHardware(hardwareArrayList, SHOW_IN_STOCK, in);
+                    }
+
                     break;
 
                 // Buy hardware or computer
                 case 2: // hardware
                 case 3: // computer
+
+                    if (hardwareArrayList.size() == 0) {
+
+                        System.out.println("No hardware! Please, wait for the hardware to be added!");
+                        break;
+                    }
 
                     // Save choose to buy
                     if (choose == 2) { // hardware
@@ -459,6 +469,17 @@ public class Store {
 
                     System.out.println("5 - Print sold hardware by month");
 
+                    ArrayList<Hardware> soldParts;
+                    Manager curManager = (Manager) currentUser;
+
+                    // Get sold parts from logged in manager (current manager)
+                    soldParts = curManager.getSoldParts();
+
+                    if (soldParts.size() == 0) {
+
+                        System.out.println("No hardware! Please, try hard to sell hardware!");
+                    }
+
                     int month;
                     int year;
 
@@ -469,12 +490,6 @@ public class Store {
                     month = MyInput.inputInt(in, 1, 12);
 
                     System.out.printf("Sold on %02d.%4d:\n", month, year);
-
-                    ArrayList<Hardware> soldParts;
-                    Manager curManager = (Manager) currentUser;
-
-                    // Get sold parts from logged in manager (current manager)
-                    soldParts = curManager.getSoldParts();
 
                     // Print all hardware with exact date of sale
                     for (Hardware h : soldParts) {
@@ -490,6 +505,11 @@ public class Store {
                 // Save hardware to CSV file
                 case 6:
                     System.out.println("5 - Save all hardware to " + DB_HARDWARE_CSV);
+
+                    if (hardwareArrayList.size() == 0) {
+
+                        System.out.println("Add some hardware first!");
+                    }
 
                     if ( MyFiles.fileWriterArrayList(hardwareArrayList, fileHardwareCSV)) {
 
@@ -680,7 +700,7 @@ public class Store {
                         // Remove customer
                         userArrayList.remove((int) indexArrayListOfClass.get(tmpChoose - 1));
                         System.out.println("Success!");
-                    } else System.out.println("Managers not found!");
+                    } else System.out.println("Customers not found!");
 
                     break;
 
