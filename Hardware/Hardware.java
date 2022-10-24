@@ -8,7 +8,7 @@ import java.util.StringJoiner;
  */
 public class Hardware implements Serializable {
 
-    private TypesOfHardware type;
+    private final TypesOfHardware type;
     private int price;
     private String name;
     private String manufacturer;

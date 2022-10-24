@@ -18,7 +18,6 @@ public class MyFiles {
         }
         catch (IOException e) {
 
-            System.out.println("Error saving to " + file.getPath());
             return false;
         }
     }
@@ -34,14 +33,9 @@ public class MyFiles {
             arrayList = (ArrayList<T>) ois.readObject();
             return arrayList;
         }
-        catch (IOException e) {
+        catch (IOException | ClassNotFoundException e) {
 
-            System.out.println("Error reading from " + file.getPath());
             return new ArrayList<>();
-        }
-        catch (ClassNotFoundException e) {
-
-            throw new RuntimeException(e);
         }
     }
 
@@ -56,7 +50,6 @@ public class MyFiles {
         }
         catch (IOException e) {
 
-            System.out.println("Error saving to " + file.getPath());
             return false;
         }
     }
@@ -72,16 +65,16 @@ public class MyFiles {
         catch (FileNotFoundException e) {
 
             System.out.println("Error reading from " + file.getPath());
+            return null;
         }
-        catch (IOException ignored) {}
-        catch (ClassNotFoundException e) {
+        catch (IOException | ClassNotFoundException e) {
 
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
+            return null;
         }
-        return null;
     }
 
-    // Read one object from file
+    // Read one object to some ArrayList
     public static <T> void deserializeAllObjects(ArrayList<T> arrayList, File file) {
 
         T obj;
@@ -98,13 +91,13 @@ public class MyFiles {
 
             System.out.println("Error reading from " + file.getPath());
         }
-        catch (IOException ignored) {}
-        catch (ClassNotFoundException e) {
+        catch (IOException | ClassNotFoundException e) {
 
-            throw new RuntimeException(e);
+            System.out.println(e.getMessage());
         }
     }
 
+    // Write to file ArrayList line by line
     public static <T> boolean fileWriterArrayList(ArrayList<T> arrayList, File file) {
 
         try (FileWriter fileWriter = new FileWriter(file)) {
@@ -117,7 +110,6 @@ public class MyFiles {
         }
         catch (IOException e) {
 
-            System.out.println("Error writing to " + file.getPath());
             return false;
         }
     }

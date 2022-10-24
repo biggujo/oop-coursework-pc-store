@@ -12,64 +12,65 @@ import java.util.Scanner;
 
 public class Store {
 
+    // Constants for input
     private final static int MIN_LENGTH = 1;
     private final static int MAX_LENGTH = 32;
 
+    // File to store hardware in binary format
     private final static String DB_HARDWARE_DAT = "db/hardware.dat";
+
+    // File to export hardware in CSV format. Delimiter - comma
     private final static String DB_HARDWARE_CSV = "out/hardware.csv";
 
+    // File to export users in CSV format. Delimiter - comma
+    private final static String DB_USERS_CSV = "out/users.csv";
+
+    // Constants to filter hardware
     private final static int SHOW_ALL = 0;
     private final static int SHOW_IN_STOCK = 1;
     private final static int SHOW_SOLD = 2;
 
+    // Name of store
     private String name;
 
     public Store(String name) {
         this.name = name;
     }
 
-    // TODO: Complete
-    public void runAsCustomer(User currentUser, ArrayList<User> userArrayList) {
+    // Run store as customer
+    public void runAsCustomer(ArrayList<User> userArrayList) {
 
+        // Create file to store hardware
         File fileHardwareDB = new File(DB_HARDWARE_DAT);
         MyFiles.createFile(fileHardwareDB);
 
+        // Scanner
         Scanner in = new Scanner(System.in);
-        Scanner inString = new Scanner(System.in);
+
+        // To input double with dot
         in.useLocale(Locale.US);
 
-        // List of computer parts
+        // Create ArrayList of hardware
         ArrayList<Hardware> hardwareArrayList = new ArrayList<>();
 
-        // TODO: Delete
-//        hardwareArrayList.add(new HardwareCooler(2000, "not sold 0", "manufacturer1", "color", 3200, 65, true));
-//        hardwareArrayList.add(new HardwareCooler(2000, "name2", "manufacturer2", "color", 3000, 80, true));
-//        hardwareArrayList.get(1).setSaleYear(2022);
-//        hardwareArrayList.get(1).setSaleMonth(5);
-//        hardwareArrayList.add(new HardwareCooler(2000, "not sold 2", "manufacturer3", "color", 3200, 65, true));
-//        hardwareArrayList.add(new HardwareCooler(2000, "name4", "manufacturer4", "color", 3200, 65, true));
-//        hardwareArrayList.add(new HardwarePC(25000, "name1 (index 4)", "manufacturer1", "color1", "motherboard1", "cpu1", "gpu1",
-//                "ram1", "ssd1", "cooler1", "power1", false, "ATX"));
-//        hardwareArrayList.get(3).setSaleYear(2022);
-//        hardwareArrayList.get(3).setSaleMonth(6);
-//        hardwareArrayList.add(new HardwareCooler(1234, "not sold 4", "manufacturer666", "666", 1200, 80, false));
-//        hardwareArrayList.add(new HardwarePC(25000, "name1 (index 6)", "manufacturer1", "color1", "motherboard1", "cpu1", "gpu1",
-//                "ram1", "ssd1", "cooler1", "power1", false, "ATX"));
-
+        // Read hardware from the binary file with deserialization
         if (fileHardwareDB.length() > 0) hardwareArrayList = MyFiles.deserializeArrayList(fileHardwareDB);
 
         System.out.print("How much money do you have today:");
-
-        ArrayList<Hardware> shoppingCartArrayList = new ArrayList<>();
         int customerMoney = MyInput.inputInt(in, 1, 99999999);
 
+        // Create ArrayList of shopping cart with Hardware
+        ArrayList<Hardware> shoppingCartArrayList = new ArrayList<>();
+
         // Array list to store indexes of users of some class
-        ArrayList<Integer> indexArrayListOfClass = new ArrayList<>();
+        ArrayList<Integer> indexArrayListOfClass;
 
         indexArrayListOfClass = returnIndexesOfUsers(userArrayList, TypesOfUsers.MANAGER);
 
+        // If no managers
         if (indexArrayListOfClass.size() == 0) {
 
+            // Say to "wait" for a manager
             System.out.println("Please, add some managers first to run the store!");
             return;
         }
@@ -93,6 +94,7 @@ public class Store {
                 // View hardware
                 case 1:
 
+                    // Call method to print hardware
                     uiPrintHardware(hardwareArrayList, SHOW_IN_STOCK, in);
                     break;
 
@@ -166,12 +168,14 @@ public class Store {
                         indexArrayListOfClass = returnIndexesOfHardware(hardwareArrayList, TypesOfHardware.PC, SHOW_IN_STOCK);
                     }
 
+                    // If given types of Hardware is found
                     if (indexArrayListOfClass.size() > 0) {
 
                         System.out.println("Choose to buy (index): ");
 
                         int indexToAdd = MyInput.inputInt(in, 1, indexArrayListOfClass.size());
 
+                        // Add to cart prompted Hardware item
                         shoppingCartArrayList.add(hardwareArrayList.get(indexArrayListOfClass.get(indexToAdd - 1)));
                         hardwareArrayList.remove((int) indexArrayListOfClass.get(indexToAdd - 1));
 
@@ -185,11 +189,13 @@ public class Store {
 
                     System.out.println("4 - View shopping cart");
 
+                    // If no items in cart
                     if (shoppingCartArrayList.size() == 0) {
 
                         System.out.println("Please, add some items to card first!");
                     }
 
+                    // Print all shopping cart of Hardware
                     for (Hardware h : shoppingCartArrayList) {
                         System.out.println(h);
                     }
@@ -199,25 +205,29 @@ public class Store {
                 // Checkout
                 case 5:
 
+                    // If shopping cart is empty
                     if (shoppingCartArrayList.size() == 0) {
 
                         System.out.println("Add items first!");
                         break;
                     }
 
+                    // Create needed amount of money to checkout
                     int sum = 0;
 
+                    // Get sum of all Hardware
                     for (Hardware h :
                             shoppingCartArrayList) {
                         sum += h.getPrice();
                     }
 
+                    // If not enough money
                     if (sum > customerMoney) {
 
                         System.out.println("Not enough money!");
                         System.out.print("Needed: " + sum + ", present: " + customerMoney);
                     }
-                    else {
+                    else { // enough money
 
                         System.out.println("Enter date of sell:");
                         System.out.print("Year: ");
@@ -227,6 +237,7 @@ public class Store {
 
                         System.out.println("What manager helped you to buy stuff?");
 
+                        // Print managers
                         int userArrayListSize = userArrayList.size();
                         for (int i = 0, j = 0; i < userArrayListSize; i++) {
                             User u = userArrayList.get(i);
@@ -238,6 +249,7 @@ public class Store {
                             }
                         }
 
+                        // Choose a manager
                         indexArrayListOfClass = returnIndexesOfUsers(userArrayList, TypesOfUsers.MANAGER);
 
                         System.out.print("> ");
@@ -245,6 +257,7 @@ public class Store {
 
                         Manager m = (Manager) userArrayList.get(indexArrayListOfClass.get(choose - 1));
 
+                        // Save sold items to manager
                         for (Hardware h :
                                 shoppingCartArrayList) {
 
@@ -256,6 +269,7 @@ public class Store {
                             m.addSold(h);
                         }
 
+                        // Empty shopping cart
                         shoppingCartArrayList = null;
                     }
 
@@ -274,7 +288,7 @@ public class Store {
                     // If cart is not empty
                     if (shoppingCartArrayList.size() > 0) {
 
-                        // Return all items
+                        // Return all items to shop
                         int tmpSize = shoppingCartArrayList.size();
                         for (int i = 0; i < tmpSize; i++) {
 
@@ -283,27 +297,40 @@ public class Store {
                         }
                     }
 
-                    MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false);
+                    // Save users to file with deserialization
+                    if (!MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false)) {
+
+                        System.out.println("Error saving to " + fileHardwareDB.getPath());
+                    }
                     return;
             }
         }
     }
 
-    public void runAsManager(User currentUser, ArrayList<User> userArrayList) {
+    // Run store as manager
+    public void runAsManager(User currentUser) {
 
+        // Create file to store hardware in binary file
         File fileHardwareDB = new File(DB_HARDWARE_DAT);
         MyFiles.createFile(fileHardwareDB);
 
+        // Create file to store hardware in CSV file
         File fileHardwareCSV = new File(DB_HARDWARE_CSV);
         MyFiles.createFile(fileHardwareCSV);
 
+        // Scanner for numbers
         Scanner in = new Scanner(System.in);
+
+        // Scanner for strings
         Scanner inString = new Scanner(System.in);
+
+        // To input double with dot
         in.useLocale(Locale.US);
 
         // List of computer parts
         ArrayList<Hardware> hardwareArrayList = new ArrayList<>();
 
+        // Read hardware from the binary file with deserialization
         if (fileHardwareDB.length() > 0) hardwareArrayList = MyFiles.deserializeArrayList(fileHardwareDB);
 
         System.out.println("Store menu:");
@@ -315,20 +342,6 @@ public class Store {
         System.out.println("5 - Print sold hardware by month");
         System.out.println("6 - Save all hardware to " + DB_HARDWARE_CSV);
         System.out.println("0 - Close store");
-
-        // TODO: Delete
-        hardwareArrayList.add(new HardwareCooler(2000, "name1", "manufacturer1", "color", 3200, 65, true));
-        hardwareArrayList.get(0).setSaleYear(2022);
-        hardwareArrayList.get(0).setSaleMonth(5);
-        hardwareArrayList.add(new HardwareCooler(2000, "name2", "manufacturer2", "color", 3000, 80, true));
-        hardwareArrayList.get(1).setSaleYear(2022);
-        hardwareArrayList.get(1).setSaleMonth(5);
-        hardwareArrayList.add(new HardwareCooler(2000, "name3", "manufacturer3", "color", 3200, 65, true));
-        hardwareArrayList.get(2).setSaleYear(2022);
-        hardwareArrayList.get(2).setSaleMonth(6);
-        hardwareArrayList.add(new HardwareCooler(2000, "name4", "manufacturer4", "color", 3200, 65, true));
-        hardwareArrayList.get(3).setSaleYear(2022);
-        hardwareArrayList.get(3).setSaleMonth(6);
 
         while (true) {
 
@@ -352,6 +365,7 @@ public class Store {
                     System.out.println("0 - Go back");
                     System.out.print("> ");
 
+                    // Add chosen hardware
                     switch (MyInput.inputInt(in, 1, 8)) {
 
                         case 1:
@@ -412,12 +426,14 @@ public class Store {
 
                     System.out.println("3 - Print some stock");
 
+                    // If no hardware, print error
                     if (hardwareArrayList.size() == 0) {
 
                         System.out.println("Add some hardware first!");
                         break;
                     }
 
+                    // Call method to print hardware
                     uiPrintHardware(hardwareArrayList, SHOW_IN_STOCK, in);
 
                     break;
@@ -427,15 +443,15 @@ public class Store {
 
                     System.out.println("4 - Print all stock");
 
+                    // If no hardware, print error
                     if (hardwareArrayList.size() == 0) {
 
                         System.out.println("Add some hardware first!");
                         break;
                     }
 
-                    for (Hardware h: hardwareArrayList) {
-                        System.out.println(h);
-                    }
+                    // Print all hardware in stock
+                    printHardwareByType(hardwareArrayList, null, SHOW_IN_STOCK);
                     break;
 
                 // Print sold hardware by month
@@ -446,6 +462,7 @@ public class Store {
                     int month;
                     int year;
 
+                    // Prompt exact year and month
                     System.out.print("Year: ");
                     year = MyInput.inputInt(in, 1900, 3000);
                     System.out.print("Month: ");
@@ -456,8 +473,10 @@ public class Store {
                     ArrayList<Hardware> soldParts;
                     Manager curManager = (Manager) currentUser;
 
+                    // Get sold parts from logged in manager (current manager)
                     soldParts = curManager.getSoldParts();
 
+                    // Print all hardware with exact date of sale
                     for (Hardware h : soldParts) {
 
                         if (h.getSaleYear() == year && h.getSaleMonth() == month) {
@@ -475,7 +494,7 @@ public class Store {
                     if ( MyFiles.fileWriterArrayList(hardwareArrayList, fileHardwareCSV)) {
 
                         System.out.println("Success!");
-                    }
+                    } else System.out.println("Error writing to " + fileHardwareCSV.getPath());
 
                     break;
 
@@ -484,25 +503,38 @@ public class Store {
 
                     System.out.println("0 - Close store");
 
-                    MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false);
+                    // Save users to file with deserialization
+                    if (!MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false)) {
+
+                        System.out.println("Error saving to " + fileHardwareDB.getPath());
+                    }
                     return;
             }
         }
 
     }
 
-    public void runAsAdmin(User currentUser, ArrayList<User> userArrayList) {
+    // Run store as admin
+    public void runAsAdmin(ArrayList<User> userArrayList) {
 
+        // Create file to store hardware in binary file
         File fileHardwareDB = new File(DB_HARDWARE_DAT);
         MyFiles.createFile(fileHardwareDB);
 
+        // Create file to export users to CSV file
+        File fileUsersCSV = new File(DB_USERS_CSV);
+        MyFiles.createFile(fileUsersCSV);
+
+        // Scanner for numbers
         Scanner in = new Scanner(System.in);
-        Scanner inString = new Scanner(System.in);
+
+        // To input double with dot
         in.useLocale(Locale.US);
 
         // List of computer parts
         ArrayList<Hardware> hardwareArrayList = new ArrayList<>();
 
+        // Read hardware from the binary file with deserialization
         if (fileHardwareDB.length() > 0) hardwareArrayList = MyFiles.deserializeArrayList(fileHardwareDB);
 
         System.out.println("Store menu:");
@@ -516,13 +548,14 @@ public class Store {
         System.out.println("4 - Set salary for manager");
         System.out.println("5 - Fire manager");
         System.out.println("6 - Delete customer");
+        System.out.println("7 - Save users to " + fileUsersCSV);
         System.out.println("0 - Close store");
 
         while (true) {
 
             System.out.print("> ");
 
-            switch (MyInput.inputInt(in, 0, 6)) {
+            switch (MyInput.inputInt(in, 0, 7)) {
 
                 // 1 - View managers
                 case 1:
@@ -542,20 +575,26 @@ public class Store {
                 case 3:
 
                     System.out.println("3 - Print manager sales");
+
+                    // Print managers
                     printUsersByType(userArrayList, TypesOfUsers.MANAGER);
                     indexArrayListOfClass = returnIndexesOfUsers(userArrayList, TypesOfUsers.MANAGER);
 
+                    // If managers are found
                     if (indexArrayListOfClass.size() > 0) {
 
                         System.out.println("Choose manager:");
                         int tmpChoose = MyInput.inputInt(in, 1, indexArrayListOfClass.size());
 
+                        // Print chosen manager
                         System.out.println(userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1)));
 
+                        // Get sold parts from manager
                         Manager tmpManager = (Manager) userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1));
                         ArrayList<Hardware> soldParts = tmpManager.getSoldParts();
-                        for (Hardware h :
-                                soldParts) {
+
+                        // Print sold parts of chosen manager
+                        for (Hardware h : soldParts) {
                             System.out.println(h);
                         }
                     } else System.out.println("Managers not found!");
@@ -566,9 +605,12 @@ public class Store {
                 case 4:
 
                     System.out.println("4 - Set salary for manager");
+
+                    // Print managers
                     printUsersByType(userArrayList, TypesOfUsers.MANAGER);
                     indexArrayListOfClass = returnIndexesOfUsers(userArrayList, TypesOfUsers.MANAGER);
 
+                    // If managers are found
                     if (indexArrayListOfClass.size() > 0) {
 
                         System.out.println("Choose manager:");
@@ -576,11 +618,14 @@ public class Store {
 
                         Manager curManager = (Manager) userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1));
 
+                        // Print chosen manager
                         System.out.println(userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1)));
 
+                        // Set new salary
                         System.out.println("New salary (1-999999): ");
                         curManager.setSalary(MyInput.inputInt(in, 1, 999999));
 
+                        // Print updated manager
                         System.out.println(userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1)));
                         System.out.println("Success!");
                     } else System.out.println("Managers not found!");
@@ -591,15 +636,22 @@ public class Store {
                 case 5:
 
                     System.out.println("5 - Fire manager");
+
+                    // Print managers
                     printUsersByType(userArrayList, TypesOfUsers.MANAGER);
                     indexArrayListOfClass = returnIndexesOfUsers(userArrayList, TypesOfUsers.MANAGER);
 
+                    // If managers are found
                     if (indexArrayListOfClass.size() > 0) {
 
+                        // Choose manager to remove
                         System.out.println("Choose manager:");
                         int tmpChoose = MyInput.inputInt(in, 1, indexArrayListOfClass.size());
 
+                        // Print removed
                         System.out.println("DELETED: " + userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1)));
+
+                        // Remove manager
                         userArrayList.remove((int) indexArrayListOfClass.get(tmpChoose - 1));
                         System.out.println("Success!");
                     } else System.out.println("Managers not found!");
@@ -610,63 +662,92 @@ public class Store {
                 case 6:
 
                     System.out.println("6 - Delete customer");
+
+                    // Print customers
                     printUsersByType(userArrayList, TypesOfUsers.CUSTOMER);
                     indexArrayListOfClass = returnIndexesOfUsers(userArrayList, TypesOfUsers.CUSTOMER);
 
+                    // If managers are found
                     if (indexArrayListOfClass.size() > 0) {
 
+                        // Choose customer to remove
                         System.out.println("Choose customer:");
                         int tmpChoose = MyInput.inputInt(in, 1, indexArrayListOfClass.size());
 
+                        // Print removed
                         System.out.println("DELETED: " + userArrayList.get(indexArrayListOfClass.get(tmpChoose - 1)));
+
+                        // Remove customer
                         userArrayList.remove((int) indexArrayListOfClass.get(tmpChoose - 1));
                         System.out.println("Success!");
                     } else System.out.println("Managers not found!");
 
                     break;
 
+                // Save users to CSV file
+                case 7:
+
+                    System.out.println("7 - Save users to " + fileUsersCSV);
+
+                    if ( MyFiles.fileWriterArrayList(userArrayList, fileUsersCSV)) {
+
+                        System.out.println("Success!");
+                    } else System.out.println("Error writing to " + fileUsersCSV.getPath());
+
+                    break;
+
                 // Close store
                 case 0:
 
-                    MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false);
+                    // Save users to file with deserialization
+                    if (!MyFiles.serializeArrayList(hardwareArrayList, fileHardwareDB, false)) {
+
+                        System.out.println("Error saving to " + fileHardwareDB.getPath());
+                    }
                     return;
             }
         }
     }
 
-    // Set shared attributes
+    // Set shared attributes for hardware
     private void partSetGeneralAttr(Hardware hardware, Scanner in, Scanner inString) {
 
-//        int price;
-//        String name;
-//        String manufacturer;
-//        String color;
-//
-//        System.out.print("Name: ");
-//        name = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
-//        System.out.print("Manufacturer: ");
-//        manufacturer = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
-//        System.out.print("Price: ");
-//        price = MyInput.inputInt(in, 1, 9999999);
-//        System.out.print("Color: ");
-//        color = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
-//
-//        hardware.setPrice(price);
-//        hardware.setName(name);
-//        hardware.setManufacturer(manufacturer);
-//        hardware.setColor(color);
+        int price;
+        String name;
+        String manufacturer;
+        String color;
+
+        // Fill fields
+        System.out.print("Name: ");
+        name = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+        System.out.print("Manufacturer: ");
+        manufacturer = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+        System.out.print("Price: ");
+        price = MyInput.inputInt(in, 1, 9999999);
+        System.out.print("Color: ");
+        color = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
+
+        // Save fields
+        hardware.setPrice(price);
+        hardware.setName(name);
+        hardware.setManufacturer(manufacturer);
+        hardware.setColor(color);
     }
 
+    // Add hardware "Case"
     private Hardware addPartCase(Scanner in, Scanner inString) {
 
         String formFactor;
         double weight;
         boolean backlight = false;
 
+        // Create new part
         HardwareCase partCase = new HardwareCase();
 
+        // Set all general attributes
         partSetGeneralAttr(partCase, in, inString);
 
+        // Fill fields
         System.out.print("Form factor:");
         formFactor = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
         System.out.print("Weight (kg):");
@@ -675,6 +756,7 @@ public class Store {
         int tmp = MyInput.inputInt(in, 0, 1);
         if (tmp == 1) backlight = true;
 
+        // Save fields
         partCase.setFormFactor(formFactor);
         partCase.setWeight(weight);
         partCase.setBacklight(backlight);
@@ -682,16 +764,20 @@ public class Store {
         return partCase;
     }
 
+    // Add hardware "Cooler"
     private Hardware addPartCooler(Scanner in, Scanner inString) {
 
         int rpm;
         int maxNoiseLevel;
         boolean backlight = false;
 
+        // Create new part
         HardwareCooler partCooler = new HardwareCooler();
 
+        // Set all general attributes
         partSetGeneralAttr(partCooler, in, inString);
 
+        // Fill fields
         System.out.print("RPM: ");
         rpm = MyInput.inputInt(in, 30, 9999);
         System.out.print("Max noise level (dB): ");
@@ -700,6 +786,7 @@ public class Store {
         int tmp = MyInput.inputInt(in, 0, 1);
         if (tmp == 1) backlight = true;
 
+        // Save fields
         partCooler.setRpm(rpm);
         partCooler.setMaxNoiseLevel(maxNoiseLevel);
         partCooler.setBacklight(backlight);
@@ -707,6 +794,7 @@ public class Store {
         return partCooler;
     }
 
+    // Add hardware "CPU"
     private Hardware addPartCPU(Scanner in, Scanner inString) {
 
         String socket;
@@ -714,10 +802,13 @@ public class Store {
         int cores;
         double maxFrequency;
 
+        // Create new part
         HardwareCPU partCPU = new HardwareCPU();
 
+        // Set all general attributes
         partSetGeneralAttr(partCPU, in, inString);
 
+        // Fill fields
         System.out.print("Socket: ");
         socket = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
         System.out.print("Generation: ");
@@ -727,6 +818,7 @@ public class Store {
         System.out.print("Max frequency (GHz): ");
         maxFrequency = MyInput.inputDouble(in, 0.5, 6);
 
+        // Save fields
         partCPU.setSocket(socket);
         partCPU.setGeneration(generation);
         partCPU.setCores(cores);
@@ -735,16 +827,20 @@ public class Store {
         return partCPU;
     }
 
+    // Add hardware "GPU"
     private Hardware addPartGPU(Scanner in, Scanner inString) {
 
         int frequency;
         int memory;
         int powerConsumption;
 
+        // Create new part
         HardwareGPU partGPU = new HardwareGPU();
 
+        // Set all general attributes
         partSetGeneralAttr(partGPU, in, inString);
 
+        // Fill fields
         System.out.print("Frequency (MHz): ");
         frequency = MyInput.inputInt(in, 100, 10000);
         System.out.print("Memory (GB): ");
@@ -752,6 +848,7 @@ public class Store {
         System.out.print("Power consumption (W): ");
         powerConsumption = MyInput.inputInt(in, 50, 1500);
 
+        // Save fields
         partGPU.setFrequency(frequency);
         partGPU.setMemory(memory);
         partGPU.setPowerConsumption(powerConsumption);
@@ -759,16 +856,20 @@ public class Store {
         return partGPU;
     }
 
+    // Add hardware "Motherboard"
     private Hardware addPartMotherboard(Scanner in, Scanner inString) {
 
         String socket;
         int maxMemoryAmount;
         String formFactor;
 
+        // Create new part
         HardwareMotherboard partMotherboard = new HardwareMotherboard();
 
+        // Set all general attributes
         partSetGeneralAttr(partMotherboard, in, inString);
 
+        // Fill fields
         System.out.print("Socket: ");
         socket = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
         System.out.print("Max memory (GB): ");
@@ -776,6 +877,7 @@ public class Store {
         System.out.print("Form factor: ");
         formFactor = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
 
+        // Save fields
         partMotherboard.setSocket(socket);
         partMotherboard.setMaxMemoryAmount(maxMemoryAmount);
         partMotherboard.setFormFactor(formFactor);
@@ -783,62 +885,78 @@ public class Store {
         return partMotherboard;
     }
 
+    // Add hardware "Power supply"
     private Hardware addPartPowerSupply(Scanner in, Scanner inString) {
 
         int powerAmount;
 
+        // Create new part
         HardwarePowerSupply partPowerSupply = new HardwarePowerSupply();
 
+        // Set all general attributes
         partSetGeneralAttr(partPowerSupply, in, inString);
 
+        // Fill field
         System.out.print("Power amount (W): ");
         powerAmount = MyInput.inputInt(in, 50, 5000);
 
+        // Save field
         partPowerSupply.setPowerAmount(powerAmount);
 
         return partPowerSupply;
     }
 
+    // Add hardware "RAM"
     private Hardware addPartRAM(Scanner in, Scanner inString) {
 
         int memory;
         double throughput;
 
+        // Create new part
         HardwareRAM partRAM = new HardwareRAM();
 
+        // Set all general attributes
         partSetGeneralAttr(partRAM, in, inString);
 
+        // Fill fields
         System.out.print("Memory (GB): ");
         memory = MyInput.inputInt(in, 1, 2048);
         System.out.print("Throughput (GB/s): ");
         throughput = MyInput.inputDouble(in, 1, 600);
 
+        // Save fields
         partRAM.setMemory(memory);
         partRAM.setThroughput(throughput);
 
         return partRAM;
     }
 
+    // Add hardware "SSD"
     private Hardware addPartSSD(Scanner in, Scanner inString) {
 
         String connector;
         int memory;
 
+        // Create new part
         HardwareSSD partSSD = new HardwareSSD();
 
+        // Set all general attributes
         partSetGeneralAttr(partSSD, in, inString);
 
+        // Fill fields
         System.out.print("Connector (SATA/M.2 etc.): ");
         connector = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
         System.out.print("Memory (GB): ");
         memory = MyInput.inputInt(in, 1, 24576);
 
+        // Save fields
         partSSD.setConnector(connector);
         partSSD.setMemory(memory);
 
         return partSSD;
     }
 
+    // Add hardware "PC"
     private Hardware addPC(Scanner in, Scanner inString) {
 
         String motherboard;
@@ -851,10 +969,13 @@ public class Store {
         boolean backlight = false;
         String formFactor;
 
+        // Create new computer
         HardwarePC pc = new HardwarePC();
 
+        // Set all general attributes
         partSetGeneralAttr(pc, in, inString);
 
+        // Fill fields
         System.out.print("Motherboard: ");
         motherboard = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
         System.out.print("CPU: ");
@@ -875,6 +996,7 @@ public class Store {
         System.out.print("Form factor: ");
         formFactor = MyInput.inputString(inString, MIN_LENGTH, MAX_LENGTH);
 
+        // Save fields
         pc.setMotherboard(motherboard);
         pc.setCpu(cpu);
         pc.setGpu(gpu);
@@ -896,8 +1018,10 @@ public class Store {
 
         for (int i = 0; i < userArrayList.size(); i++) {
 
+            // If user of given type is found
             if (userArrayList.get(i).getType().equals(type)) {
 
+                // Add index to ArrayList of indexes
                 indexArrayList.add(i);
             }
         }
@@ -934,8 +1058,10 @@ public class Store {
                 }
             }
 
+            // If hardware of given type is found
             if (h.getType().equals(type)) {
 
+                // Add index to ArrayList of indexes
                 indexArrayList.add(i);
             }
         }
@@ -949,7 +1075,11 @@ public class Store {
         for (int i = 0, j = 0, tmpSize = userArrayList.size(); i < tmpSize; i++) {
 
             User u = userArrayList.get(i);
+
+            // If all types, print all
             if (type == null) System.out.printf("%d,%s\n", ++j, u);
+
+            // Else print if type is equal to given
             if (u.getType().equals(type)) {
 
                 System.out.printf("%d,%s\n", ++j, u);
@@ -983,9 +1113,12 @@ public class Store {
                 }
             }
 
+            // If all types, print all
             if (type == null) System.out.printf("%d,%s\n", ++j, h);
+
             else {
 
+                // Else print if type is equal to given
                 if (h.getType().equals(type)) {
 
                     System.out.printf("%d,%s\n", ++j, h);
@@ -1009,6 +1142,7 @@ public class Store {
         System.out.println("8 - Power supply");
         System.out.print("> ");
 
+        // Chose hardware type
         int choose = MyInput.inputInt(in, 1, 8);
         TypesOfHardware partTypeToFind = null;
 
@@ -1050,6 +1184,7 @@ public class Store {
                 break;
         }
 
+        // Print hardware
         printHardwareByType(hardwareArrayList, partTypeToFind, showSold);
         return choose;
     }

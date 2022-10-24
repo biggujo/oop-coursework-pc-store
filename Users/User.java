@@ -1,6 +1,9 @@
 package Users;
 
+import Hardware.TypesOfHardware;
+
 import java.io.Serializable;
+import java.util.StringJoiner;
 
 public class User implements Serializable {
 
@@ -44,8 +47,23 @@ public class User implements Serializable {
         return type;
     }
 
+    public void setType(TypesOfUsers type) {
+
+        this.type = type;
+    }
+
     public String toString() {
 
-        return type.toString() + ',' + firstName + ',' + surName + ',' + password;
+        StringJoiner stringJoiner = new StringJoiner(",");
+
+        stringJoiner.add(type.toString()).add(firstName).add(surName).add(password);
+
+        return stringJoiner.toString();
+    }
+
+    // Quote a string if contains commas
+    public static String quotationIfComma(String string) {
+
+        return string.contains(",") ? '"' + string + '"' : string;
     }
 }

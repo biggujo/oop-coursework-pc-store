@@ -5,24 +5,24 @@ import Hardware.Hardware;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.StringJoiner;
 
-public class Manager extends User implements Serializable {
+public class Manager extends Customer implements Serializable {
 
     private String middleName;
     private LocalDate birthDate;
     private String jobTitle;
-    private String phone;
 
     private int salary;
     private ArrayList<Hardware> soldParts = new ArrayList<>();
 
     public Manager(String firstName, String surName, String middleName, LocalDate birthDate, String jobTitle,
                    String phone, String password, int salary) {
-        super(TypesOfUsers.MANAGER, firstName, surName, password);
+        super(firstName, surName, phone, password);
+        this.setType(TypesOfUsers.MANAGER);
         this.middleName = middleName;
         this.birthDate = birthDate;
         this.jobTitle = jobTitle;
-        this.phone = phone;
         this.salary = salary;
     }
 
@@ -50,14 +50,6 @@ public class Manager extends User implements Serializable {
         this.jobTitle = jobTitle;
     }
 
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
     public int getSalary() {
         return salary;
     }
@@ -83,9 +75,13 @@ public class Manager extends User implements Serializable {
 
     public String toString() {
 
-        return super.getType().toString() + ',' + super.getFirstName() + ',' + super.getSurName() + ',' + middleName + ',' +
-                birthDate.toString() + ',' + jobTitle + ',' + phone + ',' + salary + ',' + super.getPassword() +
-                ',' + "Sales: " + soldParts.size();
+        StringJoiner stringJoiner = new StringJoiner(",",
+                super.toString().substring(0, super.toString().length() - 2) + ",", "}");
+
+        stringJoiner.add(middleName).add(birthDate.toString()).add(jobTitle).
+                add(Integer.toString(salary)).add("Sales: " + soldParts.size());
+
+        return stringJoiner.toString();
     }
     
     public void soldPartsToString() {

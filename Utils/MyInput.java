@@ -4,6 +4,8 @@ import java.util.Scanner;
 
 // Class to return proper input (values in proper ranges or string with length in some range)
 public class MyInput {
+
+    // Input and return int in rang [min;max]
     public static int inputInt(Scanner in, int min, int max) {
 
         int value;
@@ -27,6 +29,7 @@ public class MyInput {
         }
     }
 
+    // Input and return double in rang [min;max]
     public static double inputDouble(Scanner in, double min, double max) {
 
         double value;
@@ -50,6 +53,7 @@ public class MyInput {
         }
     }
 
+    // Input and return String with length [minLen;maxLen]
     public static String inputString(Scanner in, int minLen, int maxLen) {
 
         String string;

@@ -10,38 +10,40 @@ import java.util.Scanner;
 
 public class Main {
 
+    // Constants for input
     private static final int NAME_MIN_LEN = 3;
     private static final int NAME_MAX_LEN = 32;
 
+    // File to store users in binary format
     private static final String DB_USERS_DAT = "db/users.dat";
 
+    // Main method to run program
+    // Used to provide user with authorisation
     public static void main(String[] args) {
 
+        // Create file to store users
         File fileUsersDB = new File(DB_USERS_DAT);
         MyFiles.createFile(fileUsersDB);
 
+        // Two scanners: for numbers and for strings
         Scanner in = new Scanner(System.in);
         Scanner inString = new Scanner(System.in);
-        in.useLocale(Locale.US); // To make dot in double available
+
+        // To input double with dot
+        in.useLocale(Locale.US);
 
         Store store = new Store("Computer Store");
 
+        // Create ArrayList of users
         ArrayList<User> userArrayList = new ArrayList<>();
 
+        // Read users from the binary file with deserialization
         if (fileUsersDB.length() > 0) userArrayList = MyFiles.deserializeArrayList(fileUsersDB);
 
         System.out.println(store.getName());
 
+        // Run authorisation
         while (true) {
-
-            // TODO: Delete
-//            userArrayList.add(new Admin("aaa", "aaa", "111"));
-//            userArrayList.add(new Manager("mmm", "mmm", "middle1", LocalDate.of(2001,1,1),"Junior1",
-//                    "+380123123123", "111", 15000));
-//            userArrayList.add(new Customer("ccc", "ccc", "+380678654444", "111"));
-//            userArrayList.add(new Manager("first2", "sur2", "middle2", LocalDate.of(2002,2,2),"Junior2",
-//                    "+380123123123", "123", 18000));
-//            userArrayList.add(new Customer("first2", "sur2", "+380678654444", "111"));
 
             System.out.println("Choose action:");
             System.out.println("1 - Login");
@@ -53,26 +55,30 @@ public class Main {
                 // Login
                 case 1:
 
+                    // Login with some user
                     User userLoggedIn = login(userArrayList, inString);
 
+                    // If success login
                     if (userLoggedIn != null) {
 
                         System.out.println("Type: " + userLoggedIn.getType().toString());
 
+                        // Enter store as specific user
                         switch (userLoggedIn.getType()) {
+
                             case CUSTOMER:
 
-                                store.runAsCustomer(userLoggedIn, userArrayList);
+                                store.runAsCustomer(userArrayList);
                                 break;
 
                             case MANAGER:
 
-                                store.runAsManager(userLoggedIn, userArrayList);
+                                store.runAsManager(userLoggedIn);
                                 break;
 
                             case ADMIN:
 
-                                store.runAsAdmin(userLoggedIn, userArrayList);
+                                store.runAsAdmin(userArrayList);
                                 break;
 
                             default:
@@ -122,13 +128,18 @@ public class Main {
                 // Exit
                 case 0:
 
-                    MyFiles.serializeArrayList(userArrayList, fileUsersDB, false);
+                    // Save users to file with deserialization
+                    if (!MyFiles.serializeArrayList(userArrayList, fileUsersDB, false)) {
+
+                        System.out.println("Error saving to " + fileUsersDB.getPath());
+                    }
                     System.exit(0);
             }
         }
     }
 
-    private static void registerManager(ArrayList<User> managerArrayList, Scanner in, Scanner inString) {
+    // Register user as manager, add to general user ArrayList
+    private static void registerManager(ArrayList<User> userArrayList, Scanner in, Scanner inString) {
 
         int birthDay;
         int birthMonth;
@@ -189,10 +200,11 @@ public class Main {
 
         birthDate = LocalDate.of(birthYear, birthMonth, birthDay);
 
-        managerArrayList.add(new Manager(firstName, surName, middleName, birthDate, jobTitle, phone, password, salary));
+        userArrayList.add(new Manager(firstName, surName, middleName, birthDate, jobTitle, phone, password, salary));
     }
 
-    private static void registerCustomer(ArrayList<User> customerArrayList, Scanner inString) {
+    // Register user as customer, add to general user ArrayList
+    private static void registerCustomer(ArrayList<User> userArrayList, Scanner inString) {
 
         String firstName;
         String surName;
@@ -211,10 +223,11 @@ public class Main {
         System.out.print("Password: ");
         password = MyInput.inputString(inString, 3, 12);
 
-        customerArrayList.add(new Customer(firstName, surName, phone, password));
+        userArrayList.add(new Customer(firstName, surName, phone, password));
     }
 
-    private static void registerAdmin(ArrayList<User> customerArrayList, Scanner inString) {
+    // Register user as admin, add to general user ArrayList
+    private static void registerAdmin(ArrayList<User> userArrayList, Scanner inString) {
 
         String firstName;
         String surName;
@@ -230,7 +243,7 @@ public class Main {
         System.out.print("Password: ");
         password = MyInput.inputString(inString, 3, 12);
 
-        customerArrayList.add(new Admin(firstName, surName, password));
+        userArrayList.add(new Admin(firstName, surName, password));
     }
 
     // Login into the shop
@@ -245,8 +258,10 @@ public class Main {
 
         User curLoginUser = findUserByLogin(userArrayList, login);
 
+        // If user if found
         if (curLoginUser != null) {
 
+            // Input password
             boolean success = false;
             while (!success) {
 
@@ -265,6 +280,7 @@ public class Main {
     }
 
     // Return user by its login
+    // Return User
     private static User findUserByLogin(ArrayList<User> userArrayList, String login) {
 
         for (User u : userArrayList) {
