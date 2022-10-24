@@ -258,7 +258,7 @@ public class Main {
 
         User curLoginUser = findUserByLogin(userArrayList, login);
 
-        // If user if found
+        // If user is found
         if (curLoginUser != null) {
 
             // Input password
