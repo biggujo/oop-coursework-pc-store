@@ -1,13 +1,3 @@
-COOLER,SOLD:05.2022,not sold 0,manufacturer1,2000,color,{3200,65,true}
-COOLER,SOLD:05.2022,name2,manufacturer2,2000,color,{3000,80,true}
-COOLER,SOLD:06.2022,not sold 2,manufacturer3,2000,color,{3200,65,true}
-COOLER,SOLD:06.2022,name4,manufacturer4,2000,color,{3200,65,true}
-PC,name1 (index 4),manufacturer1,25000,color1,{motherboard1,cpu1,gpu1,ram1,ssd1,cooler1,power1,false,ATX}
-COOLER,not sold 4,manufacturer666,1234,666,{1200,80,false}
-COOLER,name2,manufacturer2,2000,color,{3000,80,true}
-COOLER,name3,manufacturer3,2000,color,{3200,65,true}
-COOLER,name4,manufacturer4,2000,color,{3200,65,true}
-COOLER,name1,manufacturer1,2000,color,{3200,65,true}
-COOLER,name2,manufacturer2,2000,color,{3000,80,true}
-COOLER,name3,manufacturer3,2000,color,{3200,65,true}
-COOLER,name4,manufacturer4,2000,color,{3200,65,true}
+CPU,Intel Core i3,Intel,3200,lightgray,{12313,7,6,3.2}
+COOLER,coller,manufacturer,3200,white,{3200,65,false}
+PC,p,m,25000,black,{motherboard,cpu,gpu,ram,ssd,cooler,power,false,ATX}

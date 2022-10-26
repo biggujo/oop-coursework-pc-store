@@ -280,7 +280,7 @@ public class Store {
                         }
 
                         // Empty shopping cart
-                        shoppingCartArrayList = null;
+                        shoppingCartArrayList = new ArrayList<>();
                     }
 
                     customerMoney -= sum;
