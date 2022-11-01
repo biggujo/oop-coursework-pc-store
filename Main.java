@@ -50,6 +50,8 @@ public class Main {
             System.out.println("2 - Register");
             System.out.println("0 - Exit");
 
+            System.out.print("> ");
+
             switch (MyInput.inputInt(in, 0, 2)) {
 
                 // Login
@@ -243,7 +245,7 @@ public class Main {
         System.out.print("Password: ");
         password = MyInput.inputString(inString, 3, 12);
 
-        userArrayList.add(new Admin(firstName, surName, password));
+        userArrayList.add(new User(TypesOfUsers.ADMIN, firstName, surName, password));
     }
 
     // Login into the shop

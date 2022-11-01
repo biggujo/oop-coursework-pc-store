@@ -564,11 +564,12 @@ public class Store {
 
         System.out.println("1 - View managers");
         System.out.println("2 - View customers");
-        System.out.println("3 - Print manager sales");
-        System.out.println("4 - Set salary for manager");
-        System.out.println("5 - Fire manager");
-        System.out.println("6 - Delete customer");
-        System.out.println("7 - Save users to " + fileUsersCSV);
+        System.out.println("3 - View stock");
+        System.out.println("4 - Print manager sales");
+        System.out.println("5 - Set salary for manager");
+        System.out.println("6 - Fire manager");
+        System.out.println("7 - Delete customer");
+        System.out.println("8 - Save users to " + fileUsersCSV);
         System.out.println("0 - Close store");
 
         while (true) {
@@ -591,10 +592,25 @@ public class Store {
                     printUsersByType(userArrayList, TypesOfUsers.CUSTOMER);
                     break;
 
-                // 3 - Print manager sales
+                // 3 - View stock
                 case 3:
 
-                    System.out.println("3 - Print manager sales");
+                    System.out.println("3 - View hardware");
+
+                    if (hardwareArrayList.size() > 0) {
+
+                        // Call method to print hardware
+                        uiPrintHardware(hardwareArrayList, SHOW_IN_STOCK, in);
+                    }
+
+                    break;
+
+                    // TODO: Add "4 - View computers"
+
+                // 4 - Print manager sales
+                case 4:
+
+                    System.out.println("4 - Print manager sales");
 
                     // Print managers
                     printUsersByType(userArrayList, TypesOfUsers.MANAGER);
@@ -621,10 +637,10 @@ public class Store {
 
                     break;
 
-                // 4 - Set salary for manager
-                case 4:
+                // 5 - Set salary for manager
+                case 5:
 
-                    System.out.println("4 - Set salary for manager");
+                    System.out.println("5 - Set salary for manager");
 
                     // Print managers
                     printUsersByType(userArrayList, TypesOfUsers.MANAGER);
@@ -652,10 +668,10 @@ public class Store {
 
                     break;
 
-                // 5 - Fire manager
-                case 5:
+                // 6 - Fire manager
+                case 6:
 
-                    System.out.println("5 - Fire manager");
+                    System.out.println("6 - Fire manager");
 
                     // Print managers
                     printUsersByType(userArrayList, TypesOfUsers.MANAGER);
@@ -678,10 +694,10 @@ public class Store {
 
                     break;
 
-                // 6 - Delete customer
-                case 6:
+                // 7 - Delete customer
+                case 7:
 
-                    System.out.println("6 - Delete customer");
+                    System.out.println("7 - Delete customer");
 
                     // Print customers
                     printUsersByType(userArrayList, TypesOfUsers.CUSTOMER);
@@ -704,10 +720,10 @@ public class Store {
 
                     break;
 
-                // Save users to CSV file
-                case 7:
+                // 8 - Save users to CSV file
+                case 8:
 
-                    System.out.println("7 - Save users to " + fileUsersCSV);
+                    System.out.println("8 - Save users to " + fileUsersCSV);
 
                     if ( MyFiles.fileWriterArrayList(userArrayList, fileUsersCSV)) {
 
@@ -716,7 +732,7 @@ public class Store {
 
                     break;
 
-                // Close store
+                // 0 - Close store
                 case 0:
 
                     // Save users to file with deserialization
