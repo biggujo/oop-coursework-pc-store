@@ -576,7 +576,7 @@ public class Store {
 
             System.out.print("> ");
 
-            switch (MyInput.inputInt(in, 0, 7)) {
+            switch (MyInput.inputInt(in, 0, 8)) {
 
                 // 1 - View managers
                 case 1:
