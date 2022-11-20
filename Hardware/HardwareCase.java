@@ -25,7 +25,7 @@ public class HardwareCase extends Hardware implements Serializable {
         return formFactorCompatibility;
     }
 
-    public void setFormFactor(String formFactorCompatibility) {
+    public void setFormFactorCompatibility(String formFactorCompatibility) {
         this.formFactorCompatibility = formFactorCompatibility;
     }
 

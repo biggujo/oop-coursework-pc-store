@@ -3,7 +3,6 @@ package Hardware;
 import java.io.Serializable;
 import java.util.StringJoiner;
 
-// TODO: Make extends Hardware impl. Serializable
 public class HardwarePC extends Hardware implements Serializable {
 
     private String motherboard;

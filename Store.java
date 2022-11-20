@@ -605,8 +605,6 @@ public class Store {
 
                     break;
 
-                    // TODO: Add "4 - View computers"
-
                 // 4 - Print manager sales
                 case 4:
 
@@ -793,7 +791,7 @@ public class Store {
         if (tmp == 1) backlight = true;
 
         // Save fields
-        partCase.setFormFactor(formFactor);
+        partCase.setFormFactorCompatibility(formFactor);
         partCase.setWeight(weight);
         partCase.setBacklight(backlight);
 
